@@ -5,4 +5,5 @@ Step 3: Chạy lệnh trong terminal "npm install @mui/material @emotion/react @
         Tiếp chạy "npm install recharts"
                   "npm install react-router-dom"
                   "npm install react-hook-form"
+                  "npm install @mui/icons-material"
 Step 4: Chạy lệnh "npm start" sau khi lên trang web "http://localhost:3000/" sau đuôi '/' thì nhập: movies, rooms, schedules,...

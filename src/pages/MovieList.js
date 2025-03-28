@@ -13,7 +13,8 @@ import {
   Typography,
   Dialog,
 } from "@mui/material";
-import MovieForm from "./MovieForm"; // Import form
+import MovieForm from "./MovieForm";
+import MainLayout from "./MainLayout";
 
 const initialMovies = [
   {
@@ -55,63 +56,84 @@ const MovieList = () => {
 
   const handleSave = (movie) => {
     if (movie.id) {
-      setMovies(movies.map((m) => (m.id === movie.id ? movie : m)));
+      setMovies(movies.map((m) => (m.id === movie.id ? { ...m, ...movie } : m)));
     } else {
       setMovies([...movies, { ...movie, id: movies.length + 1 }]);
     }
     setOpen(false);
+    setEditMovie(null);
   };
 
   return (
-    <Box p={3}>
-      <Typography variant="h4" gutterBottom>
-        🎬 Danh Sách Phim
-      </Typography>
-      
-      <Button variant="contained" color="primary" sx={{ mb: 2 }} onClick={handleAdd}>
-        + Thêm phim mới
-      </Button>
+    <MainLayout>
+      <Box>
+        <Typography variant="h4" gutterBottom>
+          🎬 Danh Sách Phim
+        </Typography>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Poster</TableCell>
-              <TableCell>Tên phim</TableCell>
-              <TableCell>Thể loại</TableCell>
-              <TableCell>Thời lượng</TableCell>
-              <TableCell>Trạng thái</TableCell>
-              <TableCell>Hành động</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {movies.map((movie) => (
-              <TableRow key={movie.id}>
-                <TableCell>
-                  <Avatar variant="rounded" src={movie.poster} />
-                </TableCell>
-                <TableCell>{movie.title}</TableCell>
-                <TableCell>{movie.genre}</TableCell>
-                <TableCell>{movie.duration}</TableCell>
-                <TableCell>{movie.status}</TableCell>
-                <TableCell>
-                  <Button variant="contained" color="secondary" size="small" sx={{ mr: 1 }} onClick={() => handleEdit(movie)}>
-                    Sửa
-                  </Button>
-                  <Button variant="contained" color="error" size="small" onClick={() => handleDelete(movie.id)}>
-                    Xóa
-                  </Button>
-                </TableCell>
+        <Button variant="contained" color="primary" sx={{ mb: 2 }} onClick={handleAdd}>
+          + Thêm phim mới
+        </Button>
+
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Poster</TableCell>
+                <TableCell>Tên phim</TableCell>
+                <TableCell>Thể loại</TableCell>
+                <TableCell>Thời lượng</TableCell>
+                <TableCell>Trạng thái</TableCell>
+                <TableCell>Hành động</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {movies.map((movie) => (
+                <TableRow key={movie.id}>
+                  <TableCell>
+                    <Avatar variant="rounded" src={movie.poster} />
+                  </TableCell>
+                  <TableCell>{movie.title}</TableCell>
+                  <TableCell>{movie.genre}</TableCell>
+                  <TableCell>{movie.duration}</TableCell>
+                  <TableCell>{movie.status}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      sx={{ mr: 1 }}
+                      onClick={() => handleEdit(movie)}
+                    >
+                      Sửa
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      size="small"
+                      onClick={() => handleDelete(movie.id)}
+                    >
+                      Xóa
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
-        <MovieForm movie={editMovie} onSave={handleSave} onClose={() => setOpen(false)} />
-      </Dialog>
-    </Box>
+        <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
+          <MovieForm
+            movie={editMovie}
+            onSave={handleSave}
+            onClose={() => {
+              setOpen(false);
+              setEditMovie(null);
+            }}
+          />
+        </Dialog>
+      </Box>
+    </MainLayout>
   );
 };
 

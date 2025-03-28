@@ -14,6 +14,8 @@ function App() {
         <Route path="/schedules" element={<ShowSchedule />} />
         <Route path="/rooms" element={<ScreenRooms />} />
         <Route path="/seats/:roomId" element={<Seats />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<div>404 - Trang không tồn tại</div>} />
       </Routes>
     </Router>
   );

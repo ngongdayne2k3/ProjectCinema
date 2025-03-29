@@ -88,18 +88,13 @@ PROJECTCINEMA/
 - Chương trình ưu đãi, khuyến mãi cho khách hàng thân thiết.
 - Hỗ trợ đánh giá phim và phản hồi dịch vụ.
 
-### 6. Quản Lý Nhân Viên
-- Phân quyền nhân viên: quản lý, nhân viên bán vé, kiểm soát vé.
-- Theo dõi ca làm việc, phân công nhiệm vụ.
-- Quản lý hiệu suất làm việc của nhân viên.
-
-### 7. Báo Cáo & Doanh Thu
+### 6. Báo Cáo & Doanh Thu
 - Thống kê doanh thu theo ngày, tuần, tháng.
 - Báo cáo số lượng vé bán ra, suất chiếu có lượng khách cao.
 - Đánh giá hiệu suất phòng chiếu.
 - Quản lý chi phí vận hành rạp.
 
-### 8. Hỗ Trợ & Chăm Sóc Khách Hàng
+### 7. Hỗ Trợ & Chăm Sóc Khách Hàng (Mở rộng sau)
 - Quản lý yêu cầu hỗ trợ từ khách hàng.
 - Hỗ trợ đổi vé, hoàn tiền theo chính sách.
 - Xử lý sự cố liên quan đến suất chiếu, thanh toán, đặt vé.

@@ -36,10 +36,20 @@ const initialSchedules = [
   },
 ];
 
+// Hàm chuyển đổi định dạng ngày
+const formatDate = (dateString) => {
+  if (!dateString) return "";
+  const [year, month, day] = dateString.split("-");
+  return `${day}/${month}/${year}`;
+};
+
 const ShowSchedule = () => {
   const [schedules, setSchedules] = useState(initialSchedules);
   const [open, setOpen] = useState(false);
   const [editSchedule, setEditSchedule] = useState(null);
+
+  // Sắp xếp danh sách theo ngày (tăng dần)
+  const sortedSchedules = [...schedules].sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const handleAdd = () => {
     setEditSchedule(null);
@@ -58,10 +68,9 @@ const ShowSchedule = () => {
   };
 
   const handleSave = (schedule) => {
-    // Kiểm tra trùng lặp rạp chiếu, ngày chiếu và suất chiếu
     const isConflict = schedules.some(
       (s) =>
-        s.id !== schedule.id && // Bỏ qua lịch chiếu hiện tại nếu đang sửa
+        s.id !== schedule.id &&
         s.cinema === schedule.cinema &&
         s.date === schedule.date &&
         s.time === schedule.time
@@ -73,10 +82,8 @@ const ShowSchedule = () => {
     }
 
     if (schedule.id) {
-      // Sửa lịch chiếu
       setSchedules(schedules.map((s) => (s.id === schedule.id ? { ...s, ...schedule } : s)));
     } else {
-      // Thêm lịch chiếu mới
       setSchedules([...schedules, { ...schedule, id: schedules.length + 1 }]);
     }
     setOpen(false);
@@ -108,11 +115,11 @@ const ShowSchedule = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {schedules.map((schedule) => (
+              {sortedSchedules.map((schedule) => (
                 <TableRow key={schedule.id}>
                   <TableCell>{schedule.movie}</TableCell>
                   <TableCell>{schedule.cinema}</TableCell>
-                  <TableCell>{schedule.date}</TableCell>
+                  <TableCell>{formatDate(schedule.date)}</TableCell>
                   <TableCell>{schedule.time}</TableCell>
                   <TableCell>{schedule.type}</TableCell>
                   <TableCell>{schedule.price}</TableCell>

@@ -87,15 +87,65 @@ PROJECTCINEMA/
 
 ## Cách chạy dự án
 ### Frontend
-- Tạo thư mục con trong thư mục lớn (tên gì cũng được)
-- Mở terminal chạy "cd <tên thư mục con>" rồi chạy "npx create-react-app ." để tạo react (nếu đã có react có thể skip tới step 3 sau khi trỏ tới thư mục con)
-- Chạy lệnh trong terminal 
-    - "npm install @mui/material @emotion/react @emotion/styled" # cài thư viện Material-UI
-    - "npm install recharts" # Cài đặt thư viện Recharts (thư viện vẽ biểu đồ cho React)
-    - "npm install react-router-dom" # Cài đặt React Router (Quản lý điều hướng trong React)
-    - "npm install react-hook-form" # Cài đặt React Hook Form (Quản lý form tối ưu trong React)
-    - "npm install @mui/icons-material" # Cài đặt Material UI Icons (Biểu tượng cho Material UI)
-- Chạy lệnh "npm start" sau khi lên trang web "http://localhost:3000/" sau đuôi '/' thì nhập: movies, rooms, schedules,...
+1. **Cài đặt môi trường**
+   - Cài đặt Node.js từ [nodejs.org](https://nodejs.org/)
+   - Kiểm tra Node.js và npm đã cài đặt thành công:
+   ```bash
+   node --version
+   npm --version
+   ```
+
+2. **Khởi tạo dự án**
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+3. **Cài đặt các thư viện cần thiết**
+   ```bash
+   # UI Components
+   npm install @mui/material @emotion/react @emotion/styled
+   npm install @mui/icons-material
+
+   # Routing
+   npm install react-router-dom
+
+   # Forms
+   npm install react-hook-form
+
+   # Charts
+   npm install recharts
+
+   # API Calls
+   npm install axios
+   ```
+
+4. **Cấu hình môi trường**
+   - Tạo file `.env` trong thư mục frontend:
+   ```env
+   REACT_APP_API_URL=http://localhost:5000
+   PORT=3000
+   ```
+
+5. **Chạy ứng dụng**
+   ```bash
+   npm start
+   ```
+
+6. **Truy cập ứng dụng**
+   - Mở trình duyệt và truy cập: `http://localhost:3000`
+   - Các route có sẵn:
+     - `/movies` - Danh sách phim
+     - `/login` - Đăng nhập
+     - `/register` - Đăng ký
+     - `/booking` - Đặt vé
+     - `/admin` - Trang quản trị
+
+**Lưu ý:**
+- Đảm bảo backend đã chạy trước khi khởi động frontend
+- Kiểm tra console trong Developer Tools của trình duyệt để xem lỗi (nếu có)
+- Nếu port 3000 bị trùng, có thể thay đổi trong file `.env`
+
 ### Backend
 - cd backend
 - npm update

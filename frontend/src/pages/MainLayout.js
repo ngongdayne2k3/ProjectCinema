@@ -11,7 +11,7 @@ import Header from "../components/Header";
 import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation
 
 const menuItems = [
-  { text: "Quản lý phim", icon: <MovieIcon />, path: "/movies" },
+  { text: "Quản lý phim", icon: <MovieIcon />, path: "/admin/movies" },
   { text: "Quản lý lịch chiếu", icon: <EventSeatIcon />, path: "/schedules" },
   { text: "Quản lý phòng chiếu", icon: <TheatersIcon />, path: "/rooms" },
   { text: "Quản lý đặt vé", icon: <ConfirmationNumberIcon />, path: "/bookings" },

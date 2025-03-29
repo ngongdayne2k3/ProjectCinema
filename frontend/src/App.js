@@ -23,6 +23,7 @@ import Seats from "./pages/Seats";
 
 // Navbar
 import Navbar from "./components/Navbar";
+import NotFound from "./components/NotFound";
 
 function App() {
   return (
@@ -56,7 +57,7 @@ function App() {
         <Route path="/movies" element={<MovieList />} />
 
         {/* Trang lỗi */}
-        <Route path="*" element={<div>404 - Trang không tồn tại</div>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

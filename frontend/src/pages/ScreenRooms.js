@@ -17,13 +17,13 @@ import MainLayout from "./MainLayout";
 import RoomForm from "./RoomForm";
 
 const initialRooms = [
-  { id: 1, roomNumber: "PC-01", capacity: 50 },
-  { id: 2, roomNumber: "PC-02", capacity: 60 },
-  { id: 3, roomNumber: "PC-03", capacity: 70 },
-  { id: 4, roomNumber: "PC-04", capacity: 80 },
-  { id: 5, roomNumber: "PC-05", capacity: 90 },
-  { id: 6, roomNumber: "PC-06", capacity: 100 },
-  { id: 7, roomNumber: "PC-07", capacity: 100 }, // Đã điều chỉnh từ 110 xuống 100
+  { id: 1, roomNumber: "Phòng-01", capacity: 50 },
+  { id: 2, roomNumber: "Phòng-02", capacity: 60 },
+  { id: 3, roomNumber: "Phòng-03", capacity: 70 },
+  { id: 4, roomNumber: "Phòng-04", capacity: 80 },
+  { id: 5, roomNumber: "Phòng-05", capacity: 90 },
+  { id: 6, roomNumber: "Phòng-06", capacity: 100 },
+  { id: 7, roomNumber: "Phòng-07", capacity: 100 },
 ];
 
 const ScreenRooms = () => {

@@ -8,13 +8,13 @@ import MainLayout from "./MainLayout";
 
 // Dữ liệu phòng chiếu (lấy từ ScreenRooms)
 const rooms = [
-  { id: 1, roomNumber: "PC-01", capacity: 50 },
-  { id: 2, roomNumber: "PC-02", capacity: 60 },
-  { id: 3, roomNumber: "PC-03", capacity: 70 },
-  { id: 4, roomNumber: "PC-04", capacity: 80 },
-  { id: 5, roomNumber: "PC-05", capacity: 90 },
-  { id: 6, roomNumber: "PC-06", capacity: 100 },
-  { id: 7, roomNumber: "PC-07", capacity: 100 },
+  { id: 1, roomNumber: "Phòng-01", capacity: 50 },
+  { id: 2, roomNumber: "Phòng-02", capacity: 60 },
+  { id: 3, roomNumber: "Phòng-03", capacity: 70 },
+  { id: 4, roomNumber: "Phòng-04", capacity: 80 },
+  { id: 5, roomNumber: "Phòng-05", capacity: 90 },
+  { id: 6, roomNumber: "Phòng-06", capacity: 100 },
+  { id: 7, roomNumber: "Phòng-07", capacity: 100 },
 ];
 
 const Seats = () => {
@@ -48,7 +48,7 @@ const Seats = () => {
           seatNumber: `Ghế ${index + 1}`,
           row: String.fromCharCode(65 + rowIndex), // Nhãn hàng: A, B, C, ...
           col: (colIndex + 1).toString(), // Nhãn cột: 1, 2, 3, ...
-          status: Math.random() > 0.5 ? "Trống" : "Đã đặt", // Trạng thái ngẫu nhiên
+          status: "Trống", // Chỉ để trạng thái "Trống"
           isVIP, // Đánh dấu ghế VIP
         };
       });
@@ -76,7 +76,7 @@ const Seats = () => {
     <MainLayout>
       <Box p={3}>
         <Typography variant="h4" gutterBottom>
-          🛋️ Sơ Đồ Ghế - Phòng {room.roomNumber}
+          🛋️ Sơ Đồ Ghế - {room.roomNumber}
         </Typography>
 
         <Typography variant="h6" gutterBottom>
@@ -96,7 +96,12 @@ const Seats = () => {
 
           {/* Ghế */}
           {rowLabels.map((rowLabel, rowIndex) => (
-            <Box key={rowLabel} display="flex" alignItems="center" mb={1}>
+            <Box
+              key={rowLabel}
+              display="flex"
+              alignItems="center"
+              mb={rowIndex % 2 === 1 ? 3 : 1} // Thêm lối đi sau mỗi 2 hàng
+            >
               <Box width={40} textAlign="center">
                 {rowLabel}
               </Box>
@@ -109,13 +114,7 @@ const Seats = () => {
                       sx={{
                         width: 60,
                         height: 60,
-                        backgroundColor: seat.isVIP
-                          ? seat.status === "Trống"
-                            ? "orange" // Ghế VIP trống: màu vàng
-                            : "red" // Ghế VIP đã đặt: màu đỏ
-                          : seat.status === "Trống"
-                          ? "green" // Ghế thường trống: màu xanh
-                          : "red", // Ghế thường đã đặt: màu đỏ
+                        backgroundColor: seat.isVIP ? "orange" : "green", // Ghế VIP: vàng, ghế thường: xanh
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -159,13 +158,7 @@ const Seats = () => {
             <Box component="span" sx={{ color: "green", mr: 1 }}>■</Box> Ghế Thường Trống
           </Typography>
           <Typography variant="body1">
-            <Box component="span" sx={{ color: "red", mr: 1 }}>■</Box> Ghế Thường Đã Đặt
-          </Typography>
-          <Typography variant="body1">
             <Box component="span" sx={{ color: "orange", mr: 1 }}>■</Box> Ghế VIP Trống
-          </Typography>
-          <Typography variant="body1">
-            <Box component="span" sx={{ color: "red", mr: 1 }}>■</Box> Ghế VIP Đã Đặt
           </Typography>
         </Box>
       </Box>

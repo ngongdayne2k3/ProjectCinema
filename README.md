@@ -43,24 +43,43 @@ PROJECTCINEMA/
 │   └── package.json           # Backend dependencies
 ├── frontend/
 │   ├── public/
-│   │   ├── images/
-│   │   └── index.html
+│   │   ├── favicon.ico
+│   │   ├── index.html        # HTML template
+│   │   ├── Logo.jpg         # Website logo
+│   │   ├── logo192.png      # React default icons
+│   │   ├── logo512.png
+│   │   ├── manifest.json    # PWA manifest
+│   │   └── robots.txt       # SEO settings
 │   ├── src/
-│   │   ├── components/        # Reusable UI components
-│   │   │   ├── Header/
-│   │   │   ├── Footer/
-│   │   │   └── Movies/
-│   │   ├── pages/            # Page components
-│   │   │   ├── Home/
-│   │   │   ├── MovieDetail/
-│   │   │   └── Booking/
-│   │   ├── services/         # API service calls
-│   │   ├── store/           # State management
-│   │   ├── utils/           # Helper functions
-│   │   ├── App.js
-│   │   └── index.js
-│   ├── package.json         # Frontend dependencies
-│   └── README.md           # Frontend documentation
+│   │   ├── components/      # Reusable UI components
+│   │   │   ├── Header.js    # Site navigation header
+│   │   │   ├── Navbar.js    # Navigation menu
+│   │   │   └── Sidebar.js   # Admin sidebar menu
+│   │   ├── pages/          # Page components
+│   │   │   ├── Booking.js           # Ticket booking page
+│   │   │   ├── BookingHistory.js    # User booking history
+│   │   │   ├── Confirmation.js      # Booking confirmation
+│   │   │   ├── Dashboard.js         # Admin dashboard
+│   │   │   ├── Login.js             # User login
+│   │   │   ├── MainLayout.js        # Main page layout
+│   │   │   ├── MovieForm.js         # Movie add/edit form
+│   │   │   ├── MovieList.js         # User movie list
+│   │   │   ├── MovieListAdmin.js    # Admin movie management
+│   │   │   ├── Payment.js           # Payment processing
+│   │   │   ├── Profile.js           # User profile
+│   │   │   ├── Promotions.js        # Promotional offers
+│   │   │   ├── Register.js          # User registration
+│   │   │   ├── RoomForm.js          # Theater room form
+│   │   │   ├── ScreenRooms.js       # Theater room management
+│   │   │   ├── Seats.js             # Seat selection
+│   │   │   ├── ShowSchedule.js      # Movie schedule
+│   │   │   └── TicketSend.js        # Ticket confirmation
+│   │   ├── services/       # API service calls
+│   │   ├── App.js         # Root component
+│   │   ├── App.css        # Global styles
+│   │   ├── index.js       # Entry point
+│   │   └── index.css      # Root styles
+│   └── package.json       # Frontend dependencies
 ├── .env                    # Environment variables
 ├── .gitignore             # Git ignore rules
 └── README.md              # Project documentation

@@ -68,9 +68,15 @@ PROJECTCINEMA/
 
 ## Cách chạy dự án
 ### Frontend
-- cd frontend
-- npm install
-- npm start
+- Tạo thư mục con trong thư mục lớn (tên gì cũng được)
+- Mở terminal chạy "cd <tên thư mục con>" rồi chạy "npx create-react-app ." để tạo react (nếu đã có react có thể skip tới step 3 sau khi trỏ tới thư mục con)
+- Chạy lệnh trong terminal 
+    - "npm install @mui/material @emotion/react @emotion/styled" # cài thư viện Material-UI
+    - "npm install recharts" # Cài đặt thư viện Recharts (thư viện vẽ biểu đồ cho React)
+    - "npm install react-router-dom" # Cài đặt React Router (Quản lý điều hướng trong React)
+    - "npm install react-hook-form" # Cài đặt React Hook Form (Quản lý form tối ưu trong React)
+    - "npm install @mui/icons-material" # Cài đặt Material UI Icons (Biểu tượng cho Material UI)
+- Chạy lệnh "npm start" sau khi lên trang web "http://localhost:3000/" sau đuôi '/' thì nhập: movies, rooms, schedules,...
 ### Backend
 - cd backend
 - npm update

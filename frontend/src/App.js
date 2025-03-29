@@ -9,10 +9,13 @@ import BookingHistory from "./pages/BookingHistory";
 import SeatSelection from "./pages/SeatSelection";
 import Confirmation from "./pages/Confirmation";
 import TicketSend from "./pages/TicketSend";
+import Navbar from "./components/Navbar";
+import Promotions from "./pages/Promotions";
 
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         {/* Trang chính */}
         <Route path="/" element={<Booking />} />
@@ -27,6 +30,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/promotions" element={<Promotions />} /> 
         <Route path="/history" element={<BookingHistory />} />
       </Routes>
     </Router>

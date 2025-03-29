@@ -8,7 +8,7 @@
 - Git fetch # Tải về tất cả các thay đổi từ remote mà không tự động hợp nhất (fetch) vào nhánh hiện tại
 - Git branch -r # kiểm tra các nhánh cục bộ hiện tại
 - Git log --oneline # kiểm tra danh sách commit
-- Git reset --hard # về commit chỉ định (Xóa toàn bộ thay đổi sau commit)
+- Git reset --hard <id_commit> # về commit chỉ định (Xóa toàn bộ thay đổi sau commit)
 
 ## Cấu trúc dự án
 ```
@@ -65,6 +65,16 @@ PROJECTCINEMA/
 ├── .gitignore             # Git ignore rules
 └── README.md              # Project documentation
 ```
+
+## Cách chạy dự án
+### Frontend
+- cd frontend
+- npm install
+- npm start
+### Backend
+- cd backend
+- npm update
+- npm start
 
 ## Mô tả
 ### 1. Quản Lý Phim

@@ -1,20 +1,62 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const compression = require('compression');
+const path = require('path');
+const connectDB = require('./config/database');
+const errorHandler = require('./middlewares/errorHandler');
+const routes = require('./routes');
+const logger = require('./config/logger');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// Khởi tạo ứng dụng Express
+const app = express();
 
-var app = express();
+// Kết nối database
+connectDB();
 
-app.use(logger('dev'));
+// Middleware cơ bản
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}));
+app.use(helmet());
+app.use(compression());
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Phục vụ file tĩnh
+app.use('/uploads', express.static(path.join(__dirname, process.env.UPLOAD_PATH || 'public/uploads')));
+
+// Routes
+app.use('/', routes);
+
+// Xử lý lỗi 404
+app.use((req, res) => {
+    res.status(404).json({ message: 'Không tìm thấy tài nguyên' });
+});
+
+// Middleware xử lý lỗi
+app.use(errorHandler);
+
+// Xử lý lỗi không được bắt
+process.on('uncaughtException', (error) => {
+    logger.error('Lỗi không được bắt:', error);
+    process.exit(1);
+});
+
+process.on('unhandledRejection', (error) => {
+    logger.error('Promise rejection không được xử lý:', error);
+    process.exit(1);
+});
+
+// Khởi động server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    logger.info(`Server đang chạy trên cổng ${PORT}`);
+    logger.info(`Môi trường: ${process.env.NODE_ENV}`);
+});
 
 module.exports = app;

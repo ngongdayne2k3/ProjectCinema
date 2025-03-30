@@ -57,7 +57,7 @@ const bookingSchema = new mongoose.Schema({
 // Index để tối ưu truy vấn
 bookingSchema.index({ user: 1, createdAt: -1 });
 bookingSchema.index({ schedule: 1, createdAt: -1 });
-bookingSchema.index({ ticketCode: 1 });
+bookingSchema.index({ ticketCode: 1});
 
 // Middleware để tạo mã vé tự động
 bookingSchema.pre('save', async function(next) {

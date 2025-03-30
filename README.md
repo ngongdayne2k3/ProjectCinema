@@ -4,11 +4,12 @@
 - Git checkout <tên nhánh> # di chuyển ra nhánh
 - Git merge <tên nhánh> # hợp nhất nhánh (nhánh chọn vào nhánh hiện tại)
 - Git push origin <tên nhánh> # đẩy source lên nhánh
-- Git pull origin main # tải các thay đổi từ main về dự án
+- Git pull origin master # tải các thay đổi từ main về dự án
 - Git fetch # Tải về tất cả các thay đổi từ remote mà không tự động hợp nhất (fetch) vào nhánh hiện tại
 - Git branch -r # kiểm tra các nhánh cục bộ hiện tại
 - Git log --oneline # kiểm tra danh sách commit
 - Git reset --hard <id_commit> # về commit chỉ định (Xóa toàn bộ thay đổi sau commit)
+- git checkout <branch> -- <folder>/ # lấy folder chỉ định từ nhánh về nhánh mình
 
 ## Cấu trúc dự án
 ```
@@ -16,31 +17,48 @@ PROJECTCINEMA/
 ├── backend/
 │   ├── bin/
 │   │   └── www                  # Server startup script
-│   ├── config/
-│   │   └── database.js          # Database configuration
-│   ├── controllers/            # Business logic handlers
-│   │   ├── movieController.js
+│   ├── config/                  # Configuration files
+│   │   ├── cors.js             # CORS configuration
+│   │   ├── database.js         # Database connection setup
+│   │   ├── jwt.js             # JWT authentication config
+│   │   ├── logger.js          # Logging configuration
+│   │   ├── multer.js          # File upload config
+│   │   └── rateLimit.js       # API rate limiting
+│   ├── controllers/            # Request handlers
 │   │   ├── bookingController.js
-│   │   ├── userController.js
-│   │   └── scheduleController.js
-│   ├── models/                 # Database models
-│   │   ├── Movie.js
+│   │   ├── movieController.js
+│   │   └── userController.js
+│   ├── dao/                    # Data Access Objects
+│   │   ├── booking.dao.js
+│   │   ├── movie.dao.js
+│   │   └── user.dao.js
+│   ├── dto/                    # Data Transfer Objects
+│   │   ├── booking.dto.js
+│   │   ├── movie.dto.js
+│   │   └── user.dto.js
+│   ├── middlewares/            # Custom middleware functions
+│   │   ├── auth.js            # Authentication middleware
+│   │   ├── errorHandler.js    # Error handling middleware
+│   │   └── validator.js       # Request validation
+│   ├── models/                 # MongoDB Schema models
 │   │   ├── Booking.js
-│   │   ├── User.js
-│   │   └── Schedule.js
-│   ├── middlewares/           # Custom middleware functions
-│   │   ├── auth.js
-│   │   └── validator.js
-│   ├── public/                # Static files
-│   │   ├── images/
-│   │   └── stylesheets/
-│   ├── routes/                # API route definitions
-│   │   ├── movieRoutes.js
+│   │   ├── Movie.js
+│   │   ├── Schedule.js
+│   │   ├── Theater.js
+│   │   └── User.js
+│   ├── routes/                 # API route definitions
 │   │   ├── bookingRoutes.js
-│   │   └── userRoutes.js
-│   ├── utils/                 # Helper functions
-│   ├── app.js                 # Express app configuration
-│   └── package.json           # Backend dependencies
+│   │   ├── index.js           # Route aggregator
+│   │   └── ...
+│   ├── services/              # Business logic layer
+│   │   ├── booking.service.js
+│   │   ├── movie.service.js
+│   │   └── user.service.js
+│   ├── public/                # Static files
+│   │   └── uploads/          # Uploaded files storage
+│   ├── app.js                 # Express application setup
+│   ├── package.json           # Project dependencies
+│   └── .env.example          # Environment variables template
 ├── frontend/
 │   ├── public/
 │   │   ├── favicon.ico
@@ -147,9 +165,67 @@ PROJECTCINEMA/
 - Nếu port 3000 bị trùng, có thể thay đổi trong file `.env`
 
 ### Backend
-- cd backend
-- npm update
-- npm start
+1. **Cài đặt môi trường**
+   - Cài đặt Node.js từ [nodejs.org](https://nodejs.org/)
+   - Kiểm tra Node.js và npm:
+   ```bash
+   node --version
+   npm --version
+   ```
+
+2. **Khởi tạo dự án**
+   ```bash
+   cd backend
+   npm install
+   ```
+
+3. **Cài đặt các thư viện cần thiết**
+   ```bash
+   # Core dependencies
+   npm install express mongoose dotenv cors
+
+   # Authentication & Security
+   npm install jsonwebtoken bcryptjs
+   npm install helmet express-rate-limit
+
+   # Validation & Error Handling
+   npm install joi
+   npm install winston
+
+   # File Upload
+   npm install multer
+   ```
+
+4. **Cấu hình môi trường**
+   - Tạo file `.env` từ file `.env.example`:
+   ```env
+   PORT=5000
+   MONGODB_URI=mongodb://localhost:27017/cinema_db
+   JWT_SECRET=your_jwt_secret_key
+   NODE_ENV=development
+   ```
+
+5. **Khởi động server**
+   ```bash
+   # Development mode với nodemon
+   npm run dev
+
+   # Production mode
+   npm start
+   ```
+
+6. **Kiểm tra API**
+   - Server sẽ chạy tại: `http://localhost:5000`
+   - Các endpoint có sẵn:
+     - `GET /api/movies` - Lấy danh sách phim
+     - `POST /api/auth/login` - Đăng nhập
+     - `POST /api/auth/register` - Đăng ký
+     - `GET /api/bookings` - Lấy thông tin đặt vé
+
+**Lưu ý:**
+- Đảm bảo MongoDB đã được cài đặt và chạy trên máy local
+- Kiểm tra logs trong console để debug
+- API documentation có thể xem tại `/api-docs` (nếu đã cài đặt Swagger)
 
 ## Mô tả
 ### 1. Quản Lý Phim

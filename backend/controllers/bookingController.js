@@ -121,6 +121,16 @@ class BookingController {
             res.status(400).json({ message: error.message });
         }
     }
+
+    async getAllBookings(req, res) {
+        try {
+            const bookings = await bookingService.getAllBookings(req.query);
+            res.json(bookings);
+        } catch (error) {
+            logger.error(`Lỗi lấy danh sách tất cả đặt vé: ${error.message}`);
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = new BookingController(); 

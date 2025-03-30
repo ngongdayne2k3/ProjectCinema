@@ -52,11 +52,4 @@ process.on('unhandledRejection', (error) => {
     process.exit(1);
 });
 
-// Khởi động server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    logger.info(`Server đang chạy trên cổng ${PORT}`);
-    logger.info(`Môi trường: ${process.env.NODE_ENV}`);
-});
-
 module.exports = app;

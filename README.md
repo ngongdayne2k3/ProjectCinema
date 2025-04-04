@@ -9,6 +9,7 @@
 - Git branch -r # kiểm tra các nhánh cục bộ hiện tại
 - Git log --oneline # kiểm tra danh sách commit
 - Git reset --hard <id_commit> # về commit chỉ định (Xóa toàn bộ thay đổi sau commit)
+- git checkout <branch> -- <folder>/ # lấy folder chỉ định từ nhánh về nhánh mình
 
 ## Cấu trúc dự án
 ```
@@ -16,51 +17,87 @@ PROJECTCINEMA/
 ├── backend/
 │   ├── bin/
 │   │   └── www                  # Server startup script
-│   ├── config/
-│   │   └── database.js          # Database configuration
-│   ├── controllers/            # Business logic handlers
-│   │   ├── movieController.js
+│   ├── config/                  # Configuration files
+│   │   ├── cors.js             # CORS configuration
+│   │   ├── database.js         # Database connection setup
+│   │   ├── jwt.js             # JWT authentication config
+│   │   ├── logger.js          # Logging configuration
+│   │   ├── multer.js          # File upload config
+│   │   └── rateLimit.js       # API rate limiting
+│   ├── controllers/            # Request handlers
 │   │   ├── bookingController.js
-│   │   ├── userController.js
-│   │   └── scheduleController.js
-│   ├── models/                 # Database models
-│   │   ├── Movie.js
+│   │   ├── movieController.js
+│   │   └── userController.js
+│   ├── dao/                    # Data Access Objects
+│   │   ├── booking.dao.js
+│   │   ├── movie.dao.js
+│   │   └── user.dao.js
+│   ├── dto/                    # Data Transfer Objects
+│   │   ├── booking.dto.js
+│   │   ├── movie.dto.js
+│   │   └── user.dto.js
+│   ├── middlewares/            # Custom middleware functions
+│   │   ├── auth.js            # Authentication middleware
+│   │   ├── errorHandler.js    # Error handling middleware
+│   │   └── validator.js       # Request validation
+│   ├── models/                 # MongoDB Schema models
 │   │   ├── Booking.js
-│   │   ├── User.js
-│   │   └── Schedule.js
-│   ├── middlewares/           # Custom middleware functions
-│   │   ├── auth.js
-│   │   └── validator.js
-│   ├── public/                # Static files
-│   │   ├── images/
-│   │   └── stylesheets/
-│   ├── routes/                # API route definitions
-│   │   ├── movieRoutes.js
+│   │   ├── Movie.js
+│   │   ├── Schedule.js
+│   │   ├── Theater.js
+│   │   └── User.js
+│   ├── routes/                 # API route definitions
 │   │   ├── bookingRoutes.js
-│   │   └── userRoutes.js
-│   ├── utils/                 # Helper functions
-│   ├── app.js                 # Express app configuration
-│   └── package.json           # Backend dependencies
+│   │   ├── index.js           # Route aggregator
+│   │   └── ...
+│   ├── services/              # Business logic layer
+│   │   ├── booking.service.js
+│   │   ├── movie.service.js
+│   │   └── user.service.js
+│   ├── public/                # Static files
+│   │   └── uploads/          # Uploaded files storage
+│   ├── app.js                 # Express application setup
+│   ├── package.json           # Project dependencies
+│   └── .env.example          # Environment variables template
 ├── frontend/
 │   ├── public/
-│   │   ├── images/
-│   │   └── index.html
+│   │   ├── favicon.ico
+│   │   ├── index.html        # HTML template
+│   │   ├── Logo.jpg         # Website logo
+│   │   ├── logo192.png      # React default icons
+│   │   ├── logo512.png
+│   │   ├── manifest.json    # PWA manifest
+│   │   └── robots.txt       # SEO settings
 │   ├── src/
-│   │   ├── components/        # Reusable UI components
-│   │   │   ├── Header/
-│   │   │   ├── Footer/
-│   │   │   └── Movies/
-│   │   ├── pages/            # Page components
-│   │   │   ├── Home/
-│   │   │   ├── MovieDetail/
-│   │   │   └── Booking/
-│   │   ├── services/         # API service calls
-│   │   ├── store/           # State management
-│   │   ├── utils/           # Helper functions
-│   │   ├── App.js
-│   │   └── index.js
-│   ├── package.json         # Frontend dependencies
-│   └── README.md           # Frontend documentation
+│   │   ├── components/      # Reusable UI components
+│   │   │   ├── Header.js    # Site navigation header
+│   │   │   ├── Navbar.js    # Navigation menu
+│   │   │   └── Sidebar.js   # Admin sidebar menu
+│   │   ├── pages/          # Page components
+│   │   │   ├── Booking.js           # Ticket booking page
+│   │   │   ├── BookingHistory.js    # User booking history
+│   │   │   ├── Confirmation.js      # Booking confirmation
+│   │   │   ├── Dashboard.js         # Admin dashboard
+│   │   │   ├── Login.js             # User login
+│   │   │   ├── MainLayout.js        # Main page layout
+│   │   │   ├── MovieForm.js         # Movie add/edit form
+│   │   │   ├── MovieList.js         # User movie list
+│   │   │   ├── MovieListAdmin.js    # Admin movie management
+│   │   │   ├── Payment.js           # Payment processing
+│   │   │   ├── Profile.js           # User profile
+│   │   │   ├── Promotions.js        # Promotional offers
+│   │   │   ├── Register.js          # User registration
+│   │   │   ├── RoomForm.js          # Theater room form
+│   │   │   ├── ScreenRooms.js       # Theater room management
+│   │   │   ├── Seats.js             # Seat selection
+│   │   │   ├── ShowSchedule.js      # Movie schedule
+│   │   │   └── TicketSend.js        # Ticket confirmation
+│   │   ├── services/       # API service calls
+│   │   ├── App.js         # Root component
+│   │   ├── App.css        # Global styles
+│   │   ├── index.js       # Entry point
+│   │   └── index.css      # Root styles
+│   └── package.json       # Frontend dependencies
 ├── .env                    # Environment variables
 ├── .gitignore             # Git ignore rules
 └── README.md              # Project documentation
@@ -68,13 +105,127 @@ PROJECTCINEMA/
 
 ## Cách chạy dự án
 ### Frontend
-- cd frontend
-- npm install
-- npm start
+1. **Cài đặt môi trường**
+   - Cài đặt Node.js từ [nodejs.org](https://nodejs.org/)
+   - Kiểm tra Node.js và npm đã cài đặt thành công:
+   ```bash
+   node --version
+   npm --version
+   ```
+
+2. **Khởi tạo dự án**
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+3. **Cài đặt các thư viện cần thiết**
+   ```bash
+   # UI Components
+   npm install @mui/material @emotion/react @emotion/styled
+   npm install @mui/icons-material
+
+   # Routing
+   npm install react-router-dom
+
+   # Forms
+   npm install react-hook-form
+
+   # Charts
+   npm install recharts
+
+   # API Calls
+   npm install axios
+   ```
+
+4. **Cấu hình môi trường**
+   - Tạo file `.env` trong thư mục frontend:
+   ```env
+   REACT_APP_API_URL=http://localhost:5000
+   PORT=3000
+   ```
+
+5. **Chạy ứng dụng**
+   ```bash
+   npm start
+   ```
+
+6. **Truy cập ứng dụng**
+   - Mở trình duyệt và truy cập: `http://localhost:3000`
+   - Các route có sẵn:
+     - `/movies` - Danh sách phim
+     - `/login` - Đăng nhập
+     - `/register` - Đăng ký
+     - `/booking` - Đặt vé
+     - `/admin` - Trang quản trị
+
+**Lưu ý:**
+- Đảm bảo backend đã chạy trước khi khởi động frontend
+- Kiểm tra console trong Developer Tools của trình duyệt để xem lỗi (nếu có)
+- Nếu port 3000 bị trùng, có thể thay đổi trong file `.env`
+
 ### Backend
-- cd backend
-- npm update
-- npm start
+1. **Cài đặt môi trường**
+   - Cài đặt Node.js từ [nodejs.org](https://nodejs.org/)
+   - Kiểm tra Node.js và npm:
+   ```bash
+   node --version
+   npm --version
+   ```
+
+2. **Khởi tạo dự án**
+   ```bash
+   cd backend
+   npm install
+   ```
+
+3. **Cài đặt các thư viện cần thiết**
+   ```bash
+   # Core dependencies
+   npm install express mongoose dotenv cors
+
+   # Authentication & Security
+   npm install jsonwebtoken bcryptjs
+   npm install helmet express-rate-limit
+
+   # Validation & Error Handling
+   npm install joi
+   npm install winston
+
+   # File Upload
+   npm install multer
+   ```
+
+4. **Cấu hình môi trường**
+   - Tạo file `.env` từ file `.env.example`:
+   ```env
+   PORT=5000
+   MONGODB_URI=mongodb://localhost:27017/cinema_db
+   JWT_SECRET=your_jwt_secret_key
+   NODE_ENV=development
+   ```
+
+5. **Khởi động server**
+   ```bash
+   # Development mode với nodemon
+   npm run dev
+
+   # Production mode
+   npm start
+   ```
+
+6. **Kiểm tra API**
+   - Server sẽ chạy tại: `http://localhost:5000`
+   - Các endpoint có sẵn:
+     - `GET /api/movies` - Lấy danh sách phim
+     - `POST /api/auth/login` - Đăng nhập
+     - `POST /api/auth/register` - Đăng ký
+     - `GET /api/bookings` - Lấy thông tin đặt vé
+
+**Lưu ý:**
+- Đảm bảo MongoDB đã được cài đặt và chạy trên máy local
+- Kiểm tra logs trong console để debug
+- API documentation có thể xem tại `/api-docs` (nếu đã cài đặt Swagger)
 
 ## Mô tả
 ### 1. Quản Lý Phim

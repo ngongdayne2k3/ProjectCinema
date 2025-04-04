@@ -9,14 +9,36 @@ class UserService {
         return new UserDTO(user);
     }
 
+    async getAllUsers() {
+        const users = await userDAO.findAll();
+        return users.map(user => new UserDTO(user));
+    }
+
     async getUserById(id) {
         const user = await userDAO.findById(id);
         return user ? new UserDTO(user) : null;
     }
 
-    async updateUser(id, userData) {
+    async updateUser(id, userData, isAdmin = false) {
         const updateUserDTO = new UpdateUserDTO(userData);
+        
+        // Nếu không phải admin, không cho phép cập nhật role và membershipPoints
+        if (!isAdmin) {
+            delete updateUserDTO.role;
+            delete updateUserDTO.membershipPoints;
+            delete updateUserDTO.membershipLevel;
+        }
+
         const user = await userDAO.update(id, updateUserDTO);
+        
+        // Nếu có cập nhật membershipPoints, tính toán lại membershipLevel
+        if (user && isAdmin && updateUserDTO.membershipPoints !== undefined) {
+            const newLevel = this.calculateMembershipLevel(updateUserDTO.membershipPoints);
+            if (newLevel !== user.membershipLevel) {
+                await userDAO.updateMembershipLevel(id, newLevel);
+            }
+        }
+        
         return user ? new UserDTO(user) : null;
     }
 

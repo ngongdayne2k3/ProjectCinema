@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,91 @@
     <!-- Nosso CSS -->
     <link rel="stylesheet" href="movie-detail-style.css">
 
-    <title>Detalhes de Filme</title>
+    <title>Chi tiết phim - Cinema</title>
+
+    <style>
+        /* Existing styles */
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+        .navbar {
+            background-color: rgba(26, 26, 26, 0.95);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+            padding: 10px 0;
+            background-color: rgba(26, 26, 26, 0.98);
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .navbar-brand img {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+        .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            padding: 8px 20px !important;
+            margin: 0 5px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #E09F3E !important;
+            background-color: rgba(224, 159, 62, 0.1);
+        }
+        .btn-login {
+            background-color: #E09F3E;
+            color: #fff;
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            border: 2px solid #E09F3E;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            background-color: transparent;
+            color: #E09F3E;
+            text-decoration: none;
+        }
+        .btn-login i {
+            margin-right: 8px;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+        .footer a {
+            color: #E09F3E;
+        }
+        .footer .description {
+            color: #ccc;
+        }
+        .form-control {
+            background-color: #1a1a1a;
+            border-color: #333;
+            color: #fff;
+        }
+        .form-control:focus {
+            background-color: #1a1a1a;
+            border-color: #E09F3E;
+            color: #fff;
+        }
+        .form-control::placeholder {
+            color: #666;
+        }
+    </style>
 </head>
 <body>
     
@@ -26,8 +110,8 @@
 
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand" href="..\1_index-page-files\index.html">
-                    <img src="..\img\logo-without-title.png" alt="Logo" class="logo">
+                <a class="navbar-brand" href="../1_index-page-files/index.html">
+                    <img src="../img/logo-without-title.jpg" alt="Logo" class="logo">
                 </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,27 +121,17 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="..\1_index-page-files\index.html">Página Inicial</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="..\2_contact-page-files\contact.html">Contato</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="..\3_about-page-files\about.html">Sobre</a>
+                            <a class="nav-link" href="../1_index-page-files/index.html">Trang chủ</a>
                         </li>
                     </ul>
-                    <form class="form-inline ml-auto">
-                        <input class="form-control rounded-pill mr-sm-2" type="search" placeholder="Pesquisar..." aria-label="Pesquisar">
-                        <button class="btn btn-outline-success rounded-pill my-2 my-sm-0" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
+                    
+                    <a href="../6_Log-in_Register/login.html" class="btn-login">
+                        <i class="fas fa-user"></i>Đăng nhập
+                    </a>
                 </div>
             </div>
         </nav>
 
-        <br>
-        <hr style="border: 1px solid #E09F3E; width: 90%;">
         <br><br>
 
         <div class="container my-5">
@@ -68,15 +142,19 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <h2 style="color: #579caf;">Wish: O Poder dos Sonhos</h2>
-                    <p><strong>Direção:</strong> Ariana DeBose, Chris Pine, Chris Pine</p>
-                    <p><strong>Elenco:</strong> Ariana DeBose, Chris Pine</p>
-                    <p><strong>Sinopse:</strong> Asha, de dezessete anos, e seu bode Valentino navegam em Rosas, o reino dos desejos, onde os desejos podem literalmente se tornar realidade.</p>
-                    <p><strong>Data de Lançamento:</strong> 04/01/2024</p>
+                    <h2 style="color: #E09F3E;">Wish: O Poder dos Sonhos</h2>
+                    <p><strong>Đạo diễn:</strong> Ariana DeBose, Chris Pine, Chris Pine</p>
+                    <p><strong>Diễn viên:</strong> Ariana DeBose, Chris Pine</p>
+                    <p><strong>Tóm tắt:</strong> Asha, 17 tuổi, và chú dê Valentino của cô điều hướng qua Rosas, vương quốc của những điều ước, nơi những điều ước có thể thực sự trở thành hiện thực.</p>
+                    <p><strong>Ngày phát hành:</strong> 04/01/2024</p>
+                    <div class="mt-4">
+                        <a href="../2_Dat-ve/booking.html" class="btn btn-primary rounded-pill" style="background-color: #E09F3E; border-color: #E09F3E; padding: 10px 30px;">
+                            <i class="fas fa-ticket-alt mr-2"></i>Đặt vé
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-        
 
         <br>
         <hr style="border: 1px solid #E09F3E; width: 90%;">
@@ -87,48 +165,58 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <div class="logo">
-                            <img src="..\img\logo-footer.png" alt="Logo-Footer">
+                            <img src="../img/logo-footer.jpg" alt="Logo-Footer">
                         </div>
                         <div class="description">
-                            Obrigado por visitar nosso site.
+                            Cảm ơn bạn đã ghé thăm trang web của chúng tôi.
                             <br>
-                            João Pessoa - PB.
+                            Cinema Production.
                         </div>
                     </div>
                     <div class="col-md-4 mb-3 text-center">
                         <div class="contact">
-                            <h5>GitHub</h5>
-                            <a href="https://github.com/beaalmeidas/CineAlert-SiteApParaInternet"><i class="fab fa-github" style="font-size: 40px;"></i></a>
+                            <h5>Cinema</h5>
                         </div>
                         <div class="contact">
-                            <a href="#top" class="footer-button rounded-pill">Voltar ao topo</a>
+                            <a href="#top" class="footer-button rounded-pill">Lên đầu trang</a>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3 text-right">
                         <div class="contact-form">
-                            <h4>Conecte-se Conosco</h4>
-                            <h6>Inscreva-se na nossa newsletter para se manter por dentro das notícias mais atualizadas do cinema.</h6>
+                            <h4>Kết nối với chúng tôi</h4>
+                            <h6>Đăng ký nhận bản tin của chúng tôi để cập nhật những tin tức phim mới nhất.</h6>
                             <form action="../4_thankyou-page-files/thankyou.html" method="post" class="form-inline justify-content-end">
-                                <input type="email" class="form-control rounded-pill" name="email" placeholder="Endereço de e-mail" required>
-                                <button type="submit" class="btn btn-primary ml-2 rounded-pill">Assinar</button>
+                                <input type="email" class="form-control rounded-pill" name="email" placeholder="Nhập địa chỉ email" required>
+                                <button type="submit" class="btn btn-primary ml-2 rounded-pill">Gửi</button>
                             </form>                            
                         </div>
                     </div>
                 </div>
                 <div class="row bottom-links">
                     <div class="col-12 text-center">
-                        <p>&copy; 2024 CineAlert. Todos os direitos reservados.</p>
-                        <a href="..\privacy-policy.html">POLÍTICA DE PRIVACIDADE</a> | <a href="..\terms-conditions.html">TERMOS E CONDIÇÕES</a>
+                        <p>&copy; 2025 Cinema. Tất cả quyền được bảo lưu.</p>
+                        <a href="../privacy-policy.html">CHÍNH SÁCH BẢO MẬT</a> | <a href="../terms-conditions.html">ĐIỀU KHOẢN VÀ ĐIỀU KIỆN</a>
                     </div>
                 </div>
             </div>
         </footer>
-
     </div>
     
     <!-- JavaScript do Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 </html>

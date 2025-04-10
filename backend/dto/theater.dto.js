@@ -1,6 +1,6 @@
 class TheaterDTO {
     constructor(theater) {
-        this.id = theater._id;
+        this._id = theater._id;
         this.name = theater.name;
         this.capacity = theater.capacity;
         this.format = theater.format;

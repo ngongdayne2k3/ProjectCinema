@@ -1,69 +1,144 @@
-const theaterService = require('../services/theater.service');
+const TheaterService = require('../services/theater.service');
+const { CreateTheaterDTO } = require('../dto/theater.dto');
 const logger = require('../config/logger');
 
 class TheaterController {
-    async createTheater(req, res) {
+    static async createTheater(req, res) {
         try {
-            const theater = await theaterService.createTheater(req.body);
-            logger.info(`Tạo rạp mới: ${theater.name}`);
-            res.status(201).json(theater);
+            const theater = await TheaterService.createTheater(req.body);
+            res.status(201).json({
+                success: true,
+                data: theater
+            });
         } catch (error) {
-            logger.error(`Lỗi tạo rạp: ${error.message}`);
-            res.status(400).json({ message: error.message });
+            logger.error(`Error in createTheater controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi tạo rạp',
+                error: error.message
+            });
         }
     }
 
-    async getTheaterById(req, res) {
+    static async getTheater(req, res) {
         try {
-            const theater = await theaterService.getTheaterById(req.params.id);
+            const theater = await TheaterService.getTheaterById(req.params.id);
             if (!theater) {
-                return res.status(404).json({ message: 'Không tìm thấy rạp' });
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy rạp'
+                });
             }
-            res.json(theater);
+            res.status(200).json({
+                success: true,
+                data: theater
+            });
         } catch (error) {
-            logger.error(`Lỗi lấy thông tin rạp: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error(`Error in getTheater controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi lấy thông tin rạp',
+                error: error.message
+            });
         }
     }
 
-    async getAllTheaters(req, res) {
+    static async getAllTheaters(req, res) {
         try {
-            const theaters = await theaterService.getAllTheaters(req.query);
-            res.json(theaters);
+            const theaters = await TheaterService.getAllTheaters();
+            res.status(200).json({
+                success: true,
+                data: theaters
+            });
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách rạp: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error(`Error in getAllTheaters controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi lấy danh sách rạp',
+                error: error.message
+            });
         }
     }
 
-    async updateTheater(req, res) {
+    static async updateTheater(req, res) {
         try {
-            const theater = await theaterService.updateTheater(req.params.id, req.body);
+            const theater = await TheaterService.updateTheater(req.params.id, req.body);
             if (!theater) {
-                return res.status(404).json({ message: 'Không tìm thấy rạp' });
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy rạp'
+                });
             }
-            logger.info(`Cập nhật rạp: ${theater.name}`);
-            res.json(theater);
+            res.status(200).json({
+                success: true,
+                data: theater
+            });
         } catch (error) {
-            logger.error(`Lỗi cập nhật rạp: ${error.message}`);
-            res.status(400).json({ message: error.message });
+            logger.error(`Error in updateTheater controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi cập nhật rạp',
+                error: error.message
+            });
         }
     }
 
-    async deleteTheater(req, res) {
+    static async deleteTheater(req, res) {
         try {
-            const theater = await theaterService.getTheaterById(req.params.id);
+            const theater = await TheaterService.deleteTheater(req.params.id);
             if (!theater) {
-                return res.status(404).json({ message: 'Không tìm thấy rạp' });
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy rạp'
+                });
             }
-            await theaterService.deleteTheater(req.params.id);
-            logger.info(`Xóa rạp: ${theater.name}`);
-            res.json({ message: 'Xóa rạp thành công' });
+            res.status(200).json({
+                success: true,
+                message: 'Xóa rạp thành công'
+            });
         } catch (error) {
-            logger.error(`Lỗi xóa rạp: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error(`Error in deleteTheater controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi xóa rạp',
+                error: error.message
+            });
+        }
+    }
+
+    static async getTheatersByFormat(req, res) {
+        try {
+            const theaters = await TheaterService.getTheatersByFormat(req.params.format);
+            res.status(200).json({
+                success: true,
+                data: theaters
+            });
+        } catch (error) {
+            logger.error(`Error in getTheatersByFormat controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi lấy danh sách rạp theo định dạng',
+                error: error.message
+            });
+        }
+    }
+
+    static async getActiveTheaters(req, res) {
+        try {
+            const theaters = await TheaterService.getActiveTheaters();
+            res.status(200).json({
+                success: true,
+                data: theaters
+            });
+        } catch (error) {
+            logger.error(`Error in getActiveTheaters controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi lấy danh sách rạp đang hoạt động',
+                error: error.message
+            });
         }
     }
 }
 
-module.exports = new TheaterController(); 
+module.exports = TheaterController; 

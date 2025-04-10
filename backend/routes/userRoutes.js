@@ -12,7 +12,7 @@ router.post('/login', authLimiter, loginValidationRules, validate, userControlle
 // Protected routes
 router.get('/profile', auth, userController.getUserProfile);
 router.put('/profile', auth, userValidationRules, validate, userController.updateProfile);
-router.put('/membership/points', auth, userController.updateMembershipPoints);
+// router.put('/membership/points', auth, userController.updateMembershipPoints);
 
 // Admin routes
 router.get('/', adminAuth, userController.getAllUsers);

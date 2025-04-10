@@ -1,56 +1,92 @@
 const Theater = require('../models/Theater');
+const { TheaterDTO } = require('../dto/theater.dto');
 const logger = require('../config/logger');
 
 class TheaterDAO {
-    async create(theaterData) {
+    static async create(theaterData) {
         try {
             const theater = new Theater(theaterData);
-            return await theater.save();
+            await theater.save();
+            return TheaterDTO.toDTO(theater);
         } catch (error) {
             logger.error(`Lỗi tạo rạp trong DAO: ${error.message}`);
             throw error;
         }
     }
 
-    async findById(id) {
+    static async findById(id) {
         try {
-            return await Theater.findById(id);
+            const theater = await Theater.findById(id);
+            return theater ? TheaterDTO.toDTO(theater) : null;
         } catch (error) {
             logger.error(`Lỗi tìm rạp theo ID trong DAO: ${error.message}`);
             throw error;
         }
     }
 
-    async findAll(query = {}) {
+    static async findAll() {
         try {
-            return await Theater.find({ ...query, isDeleted: false });
+            const theaters = await Theater.find({ isDeleted: false });
+            return TheaterDTO.toDTOList(theaters);
         } catch (error) {
             logger.error(`Lỗi lấy danh sách rạp trong DAO: ${error.message}`);
             throw error;
         }
     }
 
-    async update(id, theaterData) {
+    static async update(id, theaterData) {
         try {
-            return await Theater.findByIdAndUpdate(id, theaterData, { new: true });
+            const theater = await Theater.findByIdAndUpdate(
+                id,
+                { $set: theaterData },
+                { new: true }
+            );
+            return theater ? TheaterDTO.toDTO(theater) : null;
         } catch (error) {
             logger.error(`Lỗi cập nhật rạp trong DAO: ${error.message}`);
             throw error;
         }
     }
 
-    async softDelete(id) {
+    static async delete(id) {
         try {
-            return await Theater.findByIdAndUpdate(
+            const theater = await Theater.findByIdAndUpdate(
                 id,
-                { isDeleted: true },
+                { $set: { isDeleted: true } },
                 { new: true }
             );
+            return theater ? TheaterDTO.toDTO(theater) : null;
         } catch (error) {
             logger.error(`Lỗi xóa mềm rạp trong DAO: ${error.message}`);
             throw error;
         }
     }
+
+    static async findByFormat(format) {
+        try {
+            const theaters = await Theater.find({ 
+                format: format,
+                isDeleted: false 
+            });
+            return TheaterDTO.toDTOList(theaters);
+        } catch (error) {
+            logger.error(`Lỗi lấy danh sách rạp theo format trong DAO: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async findActiveTheaters() {
+        try {
+            const theaters = await Theater.find({ 
+                isActive: true,
+                isDeleted: false 
+            });
+            return TheaterDTO.toDTOList(theaters);
+        } catch (error) {
+            logger.error(`Lỗi lấy danh sách rạp đang hoạt động trong DAO: ${error.message}`);
+            throw error;
+        }
+    }
 }
 
-module.exports = new TheaterDAO(); 
+module.exports = TheaterDAO; 

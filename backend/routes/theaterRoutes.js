@@ -25,7 +25,7 @@ router.put('/:id',
 
 router.delete('/:id', adminAuth, theaterController.deleteTheater);
 
-router.put('/:id/seats', adminAuth, theaterController.updateSeats);
-router.put('/:id/status', adminAuth, theaterController.updateTheaterStatus);
+// router.put('/:id/seats', adminAuth, theaterController.updateSeats);
+// router.put('/:id/status', adminAuth, theaterController.updateTheaterStatus);
 
 module.exports = router; 

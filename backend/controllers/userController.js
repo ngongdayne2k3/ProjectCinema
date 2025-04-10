@@ -36,7 +36,7 @@ class UserController {
 
     async updateProfile(req, res) {
         try {
-            const user = await userService.updateUser(req.user._id, req.body);
+            const user = await userService.updateUser(req.user._id, req.body, false);
             logger.info(`Cập nhật thông tin người dùng: ${user.email}`);
             res.json(user);
         } catch (error) {
@@ -83,7 +83,7 @@ class UserController {
 
     async updateUser(req, res) {
         try {
-            const user = await userService.updateUser(req.params.id, req.body);
+            const user = await userService.updateUser(req.params.id, req.body, true);
             if (!user) {
                 return res.status(404).json({ message: 'Không tìm thấy người dùng' });
             }

@@ -15,34 +15,23 @@ const theaterSchema = new mongoose.Schema({
         enum: ['2D', '3D', 'IMAX'],
         required: true
     },
-    seats: [{
-        row: {
-            type: String,
-            required: true
-        },
-        number: {
-            type: Number,
-            required: true
-        },
-        type: {
-            type: String,
-            enum: ['Standard', 'VIP'],
-            default: 'Standard'
-        },
-        status: {
-            type: String,
-            enum: ['Available', 'Maintenance', 'Reserved'],
-            default: 'Available'
-        }
-    }],
+    rows: {
+        type: Number,
+        required: true
+    },
+    seatsPerRow: {
+        type: Number,
+        required: true
+    },
     isActive: {
         type: Boolean,
         default: true
     },
-    description: String,
-    facilities: [{
-        type: String
-    }]
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    description: String
 }, {
     timestamps: true
 });
@@ -50,5 +39,6 @@ const theaterSchema = new mongoose.Schema({
 // Index để tối ưu truy vấn
 theaterSchema.index({ name: 1 });
 theaterSchema.index({ format: 1 });
+theaterSchema.index({ isDeleted: 1 });
 
 module.exports = mongoose.model('Theater', theaterSchema); 

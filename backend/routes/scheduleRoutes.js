@@ -11,7 +11,7 @@ router.get('/movie/:movieId', scheduleController.getSchedulesByMovie);
 router.get('/:id', scheduleController.getScheduleById);
 
 // Protected routes
-router.get('/available-seats/:id', auth, scheduleController.getAvailableSeats);
+// router.get('/available-seats/:id', auth, scheduleController.getAvailableSeats);
 
 // Admin routes
 router.post('/', 
@@ -31,6 +31,6 @@ router.put('/:id',
 
 router.delete('/:id', adminAuth, scheduleController.deleteSchedule);
 
-router.put('/:id/status', adminAuth, scheduleController.updateScheduleStatus);
+// router.put('/:id/status', adminAuth, scheduleController.updateScheduleStatus);
 
 module.exports = router; 

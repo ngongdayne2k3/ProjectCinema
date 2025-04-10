@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Playfair+Display&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Sora:wght@100..800&display=swap" rel="stylesheet">
+
+    <!-- Nosso CSS -->
+    <link rel="stylesheet" href="../1_index-page-files/index-style.css">
+
+    <title>Trang chủ - Cinema</title>
+
+    <style>
+        /* Existing styles */
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+        .monthly-section {
+            padding: 50px 0;
+            background-color: #000;
+        }
+        .movie-card {
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+        .movie-card:hover {
+            transform: translateY(-5px);
+        }
+        .movie-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .movie-info {
+            padding: 20px;
+        }
+        .movie-info h4 {
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        .movie-info p {
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+        .movie-info .btn-primary {
+            background-color: #E09F3E;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+        .movie-info .btn-primary:hover {
+            background-color: #d18f2e;
+        }
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%;
+            color: #E09F3E;
+        }
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: #E09F3E;
+            border-radius: 50%;
+            padding: 20px;
+        }
+        .index-greetings p {
+            color: #fff;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+        .footer a {
+            color: #E09F3E;
+        }
+        .footer .description {
+            color: #ccc;
+        }
+        .form-control {
+            background-color: #1a1a1a;
+            border-color: #333;
+            color: #fff;
+        }
+        .form-control:focus {
+            background-color: #1a1a1a;
+            border-color: #E09F3E;
+            color: #fff;
+        }
+        .form-control::placeholder {
+            color: #666;
+        }
+        hr {
+            border-color: #E09F3E;
+        }
+        .navbar {
+            background-color: rgba(26, 26, 26, 0.95);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+            padding: 10px 0;
+            background-color: rgba(26, 26, 26, 0.98);
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .navbar-brand img {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+        .navbar.scrolled .navbar-brand img {
+            height: 40px;
+            width: 40px;
+        }
+        .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            padding: 8px 20px !important;
+            margin: 0 5px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #E09F3E !important;
+            background-color: rgba(224, 159, 62, 0.1);
+        }
+        .btn-login {
+            background-color: #E09F3E;
+            color: #fff;
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            border: 2px solid #E09F3E;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            background-color: transparent;
+            color: #E09F3E;
+            text-decoration: none;
+        }
+        .btn-login i {
+            margin-right: 8px;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .user-menu .nav-link {
+            margin-left: 15px;
+        }
+        .user-dropdown {
+            background-color: #1a1a1a;
+            border: 1px solid #E09F3E;
+            border-radius: 10px;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            min-width: 200px;
+            display: none;
+            z-index: 1000;
+            margin-top: 10px;
+        }
+        .user-dropdown.show {
+            display: block;
+        }
+        .user-dropdown a {
+            color: #fff;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .user-dropdown a:hover {
+            background-color: rgba(224, 159, 62, 0.1);
+            color: #E09F3E;
+        }
+        .user-dropdown a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .user-greeting {
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .user-greeting:hover {
+            background-color: rgba(224, 159, 62, 0.1);
+            color: #E09F3E;
+        }
+        .user-greeting i {
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    
+    <script src="../1_index-page-files/index-script.js"></script>
+
+    <div class="page">
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index_auth.html">
+                    <img src="../img/logo-without-title.jpg" alt="Logo" class="logo">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index_auth.html">Trang chủ</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="user-menu">
+                        <div class="user-greeting" onclick="toggleDropdown()">
+                            Xin chào, User! <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="history.html">
+                                <i class="fas fa-history"></i> Lịch sử đặt vé
+                            </a>
+                            <a href="#" onclick="handleLogout()">
+                                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <br><br>
+
+        <div class="index-division row">
+            <div class="index-image-container col-md-8">
+                <img src="../img/index-image.jpg" class="img-fluid" alt="Index-image">
+            </div>
+
+            <div class="index-greetings col-md-4">
+                <div class="index-welcome">
+                    <h1>Chào mừng!</h1>
+                </div>
+
+                <br>
+
+                <p>Chào mừng đến với Cinema! 🎬 
+                    <br>
+                    <br>Chúng tôi rất vui mừng được chào đón bạn đến với CineAlert, điểm đến lý tưởng cho những người yêu điện ảnh.
+                    <br>
+                    <br>Hãy khám phá danh mục phim của chúng tôi, cập nhật những tin tức mới nhất và theo dõi tất cả những gì đang diễn ra trong thế giới điện ảnh. Từ những bộ phim bom tấn đến những tác phẩm độc lập, chúng tôi có thứ gì đó đặc biệt cho mọi sở thích.
+                </p>
+
+                <br>
+                <a href="#movie-catalogue" class="btn btn-primary rounded-pill btn-navigate-catalog">Xem danh mục phim</a>
+            </div>
+        </div>
+
+        <br><br>
+        <hr style="border: 1px solid #E09F3E; width: 90%;">
+        <br>
+        
+        <div id="movie-catalogue" class="movie-catalogue">
+            <div class="monthly-section">
+                <div class="container">
+                    <h2 class="text-center mb-5">Phim đang chiếu</h2>
+                    <div id="movieCarousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="movie-card">
+                                            <img src="../month-movie-images/1.png" alt="Avatar 3" class="img-fluid">
+                                            <div class="movie-info">
+                                                <h4>Avatar 3</h4>
+                                                <p>Thể loại: Khoa học viễn tưởng</p>
+                                                <p>Thời lượng: 3h</p>
+                                                <a href="../2_Dat-ve/booking.html" class="btn btn-primary">Đặt vé</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Đóng dropdown khi click ra ngoài
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const greeting = document.querySelector('.user-greeting');
+            if (!greeting.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        function handleLogout() {
+            // Xóa thông tin đăng nhập từ localStorage (nếu có)
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            
+            // Chuyển hướng về trang chủ
+            window.location.href = '../1_index-page-files/index.html';
+        }
+    </script>
+</body>
+</html>
+

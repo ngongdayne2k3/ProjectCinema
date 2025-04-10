@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Playfair+Display&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Sora:wght@100..800&display=swap" rel="stylesheet">
+
+    <!-- Nosso CSS -->
+    <link rel="stylesheet" href="../1_index-page-files/index-style.css">
+
+    <title>Lịch Sử Giao Dịch - Cinema</title>
+
+    <style>
+        /* Existing styles */
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background-color: rgba(26, 26, 26, 0.95);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+            padding: 10px 0;
+            background-color: rgba(26, 26, 26, 0.98);
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .navbar-brand img {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+        .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+            padding: 8px 20px !important;
+            margin: 0 5px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #E09F3E !important;
+            background-color: rgba(224, 159, 62, 0.1);
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .user-dropdown {
+            background-color: #1a1a1a;
+            border: 1px solid #E09F3E;
+            border-radius: 10px;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            min-width: 200px;
+            display: none;
+            z-index: 1000;
+            margin-top: 10px;
+        }
+        .user-dropdown.show {
+            display: block;
+        }
+        .user-dropdown a {
+            color: #fff;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .user-dropdown a:hover {
+            background-color: rgba(224, 159, 62, 0.1);
+            color: #E09F3E;
+        }
+        .user-dropdown a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .user-greeting {
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .user-greeting:hover {
+            background-color: rgba(224, 159, 62, 0.1);
+            color: #E09F3E;
+        }
+        .user-greeting i {
+            margin-left: 8px;
+        }
+        .main-content {
+            margin-top: 100px;
+            flex: 1;
+            padding: 20px;
+        }
+        .history-header {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid #E09F3E;
+        }
+        .history-header h1 {
+            color: #E09F3E;
+            margin-bottom: 0;
+            font-size: 2rem;
+        }
+        .transaction-list {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 40px 0;
+            margin-top: auto;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .footer-links a {
+            color: #E09F3E;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-links a:hover {
+            color: #fff;
+        }
+        .footer-text {
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index_auth.html">
+                <img src="../img/logo-without-title.jpg" alt="Logo" class="logo">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index_auth.html">Trang chủ</a>
+                    </li>
+                </ul>
+                
+                <div class="user-menu">
+                    <div class="user-greeting" onclick="toggleDropdown()">
+                        Xin chào, User! <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="history.html">
+                            <i class="fas fa-history"></i> Lịch sử đặt vé
+                        </a>
+                        <a href="#" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="history-header">
+                <h1>LỊCH SỬ GIAO DỊCH</h1>
+            </div>
+            
+            <div class="transaction-list">
+                <!-- Nội dung lịch sử giao dịch sẽ được thêm vào đây -->
+                <p>Chưa có giao dịch nào.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Về chúng tôi</a>
+                <a href="#">Điều khoản sử dụng</a>
+                <a href="#">Chính sách bảo mật</a>
+                <a href="#">Liên hệ</a>
+            </div>
+            <div class="footer-text">
+                <p>&copy; 2024 Cinema. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Đóng dropdown khi click ra ngoài
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const greeting = document.querySelector('.user-greeting');
+            if (!greeting.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        function handleLogout() {
+            // Xóa thông tin đăng nhập từ localStorage (nếu có)
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            
+            // Chuyển hướng về trang chủ
+            window.location.href = '../1_index-page-files/index.html';
+        }
+    </script>
+</body>
+</html>

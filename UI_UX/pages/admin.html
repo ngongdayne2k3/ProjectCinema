@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../style.css" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+
+  <script type="text/javascript">
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            border: 'hsl(var(--border))',
+            input: 'hsl(var(--input))',
+            ring: 'hsl(var(--ring))',
+            background: 'hsl(var(--background))',
+            foreground: 'hsl(var(--foreground))',
+            primary: {
+              DEFAULT: 'hsl(var(--primary))',
+              foreground: 'hsl(var(--primary-foreground))'
+            },
+            secondary: {
+              DEFAULT: 'hsl(var(--secondary))',
+              foreground: 'hsl(var(--secondary-foreground))'
+            },
+            accent: {
+              DEFAULT: 'hsl(var(--accent))',
+              foreground: 'hsl(var(--accent-foreground))'
+            },
+            muted: {
+              DEFAULT: 'hsl(var(--muted))',
+              foreground: 'hsl(var(--muted-foreground))'
+            },
+            destructive: {
+              DEFAULT: 'hsl(var(--destructive))',
+              foreground: 'hsl(var(--destructive-foreground))'
+            },
+            card: {
+              DEFAULT: 'hsl(var(--card))',
+              foreground: 'hsl(var(--card-foreground))'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer base {
+      :root {
+        --background: 0 0% 100%;
+        --foreground: 240 10% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 240 10% 3.9%;
+        --primary: 240 5.9% 10%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 240 4.8% 95.9%;
+        --secondary-foreground: 240 5.9% 10%;
+        --muted: 240 4.8% 95.9%;
+        --muted-foreground: 240 3.8% 46.1%;
+        --accent: 240 4.8% 95.9%;
+        --accent-foreground: 240 5.9% 10%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 5.9% 90%;
+        --input: 240 5.9% 90%;
+        --ring: 240 5.9% 10%;
+      }
+    }
+  </style>
+</head>
+<body class="bg-background text-foreground">
+  <div class="p-6">
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-6">
+      <div class="flex items-center space-x-3">
+        <img src="https://openui.fly.dev/openui/24x24.svg?text=🎬" alt="Logo" class="h-12" />
+        <h1 class="text-3xl font-bold text-primary">Movie Theater Admin</h1>
+      </div>
+      <nav>
+        <ul class="flex space-x-6 text-lg font-medium">
+          <li><a href="dashboard.html" class="hover:text-primary">Dashboard</a></li>
+          <li><a href="movies.html" class="hover:text-primary">Movies</a></li>
+          <li><a href="showtime.html" class="hover:text-primary">Showtimes</a></li>
+          <li><a href="customer.html" class="hover:text-primary">Customers</a></li>
+          <li><a href="../index.html" class="text-red-600 hover:underline">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Welcome Section -->
+    <section>
+      <h2 class="text-4xl font-bold text-primary mb-2">Welcome, Admin!</h2>
+      <p class="text-muted-foreground">Manage movies, showtimes, and more with ease.</p>
+    </section>
+
+    <!-- Stats Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+      <div class="bg-card p-6 rounded-xl shadow">
+        <h3 class="text-2xl font-bold text-primary">Total Movies</h3>
+        <img src="https://placehold.co/400x250" alt="Total Movies" class="mt-4 rounded-lg" />
+        <p class="text-xl font-bold text-accent mt-4">300</p>
+        <p class="text-muted-foreground mt-2">Manage and showcase a collection of 300 movies.</p>
+      </div>
+
+      <div class="bg-card p-6 rounded-xl shadow">
+        <h3 class="text-2xl font-bold text-primary">Showtimes Overview</h3>
+        <img src="https://placehold.co/400x250" alt="Showtimes" class="mt-4 rounded-lg" />
+        <p class="text-xl font-bold text-accent mt-4">Plan and schedule movie showtimes.</p>
+        <p class="text-muted-foreground mt-2">Create and manage showtimes for an optimal movie experience.</p>
+      </div>
+
+      <div class="bg-card p-6 rounded-xl shadow">
+        <h3 class="text-2xl font-bold text-primary">Recent Screenings</h3>
+        <img src="https://placehold.co/400x250" alt="Screenings" class="mt-4 rounded-lg" />
+        <p class="text-xl font-bold text-accent mt-4">Review the latest movie screenings.</p>
+        <p class="text-muted-foreground mt-2">Stay informed about recent screenings and attendance.</p>
+      </div>
+
+      <div class="bg-card p-6 rounded-xl shadow">
+        <h3 class="text-2xl font-bold text-primary">Theater Status</h3>
+        <img src="https://placehold.co/400x250" alt="Theater Status" class="mt-4 rounded-lg" />
+        <p class="text-xl font-bold text-accent mt-4">Operating Smoothly</p>
+        <p class="text-muted-foreground mt-2">Monitor real-time performance and uptime.</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-12 text-center text-muted-foreground text-sm">
+      <p>© 2025 Movie Theater Admin. All rights reserved.</p>
+    </footer>
+  </div>
+</body>
+</html>

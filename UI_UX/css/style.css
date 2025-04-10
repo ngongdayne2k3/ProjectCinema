@@ -1,0 +1,96 @@
+/* Base */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8fafc; /* tương đương Tailwind bg-background */
+    color: #111827; /* text-foreground */
+  }
+  
+  /* Header chung */
+  header {
+    background-color: #000; /* nền đen */
+    color: #fff;
+    padding: 1.5rem;
+    border-bottom: 2px solid #1f2937;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Logo & title */
+  header .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  header .logo img {
+    height: 48px;
+  }
+  header h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  
+  /* Navbar */
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 1rem 0 0;
+    padding-left: 0;
+  }
+  nav ul li a {
+    text-decoration: none;
+    color: #f3f4f6; /* text-white */
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  nav ul li a:hover {
+    color: #d1d5db; /* hover:text-gray-300 */
+  }
+  
+  /* Buttons */
+  button {
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+  }
+  
+  /* Primary Button */
+  .btn-primary {
+    background-color: #1d4ed8;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+  }
+  .btn-primary:hover {
+    background-color: #2563eb;
+  }
+  
+  /* Danger Button */
+  .btn-danger {
+    background-color: #dc2626;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+  }
+  .btn-danger:hover {
+    background-color: #b91c1c;
+  }
+  
+  /* Card */
+  .card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-top: 2rem;
+  }
+  

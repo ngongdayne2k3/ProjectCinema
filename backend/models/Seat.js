@@ -6,6 +6,10 @@ const seatSchema = new mongoose.Schema({
         ref: 'Theater',
         required: true
     },
+    code: {
+        type: String,
+        required: true
+    },
     row: {
         type: String,
         required: true

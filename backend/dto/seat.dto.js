@@ -4,6 +4,7 @@ class SeatDTO {
         this.theater = seat.theater;
         this.row = seat.row;
         this.number = seat.number;
+        this.code = seat.code;
         this.type = seat.type;
         this.status = seat.status;
         this.isDeleted = seat.isDeleted;
@@ -25,6 +26,7 @@ class CreateSeatDTO {
         this.theater = data.theater;
         this.row = data.row;
         this.number = data.number;
+        this.code = `${data.row}${data.number}`;
         this.type = data.type || 'Standard';
         this.status = data.status || 'Available';
     }
@@ -34,6 +36,11 @@ class UpdateSeatDTO {
     constructor(data) {
         if (data.type) this.type = data.type;
         if (data.status) this.status = data.status;
+        if (data.row || data.number) {
+            this.row = data.row;
+            this.number = data.number;
+            this.code = `${data.row}${data.number}`;
+        }
     }
 }
 

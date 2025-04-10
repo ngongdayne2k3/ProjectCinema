@@ -21,25 +21,24 @@ const scheduleSchema = new mongoose.Schema({
     },
     format: {
         type: String,
-        enum: ['2D', '3D', 'IMAX'],
+        enum: ['2D', '3D', 'IMAX', '4DX', 'SCREENX'],
         required: true
     },
-    price: {
-        type: Number,
-        required: true
-    },
+    prices: [{
+        type: {
+            type: String,
+            enum: ['Standard', 'VIP'],
+            required: true
+        },
+        price: {
+            type: Number,
+            required: true
+        }
+    }],
     status: {
         type: String,
-        enum: ['Scheduled', 'In Progress', 'Completed', 'Cancelled'],
-        default: 'Scheduled'
-    },
-    availableSeats: {
-        type: Number,
-        required: true
-    },
-    totalSeats: {
-        type: Number,
-        required: true
+        enum: ['upcoming', 'showing', 'finished', 'canceled'],
+        default: 'upcoming'
     }
 }, {
     timestamps: true
@@ -48,5 +47,6 @@ const scheduleSchema = new mongoose.Schema({
 // Index để tối ưu truy vấn
 scheduleSchema.index({ movie: 1, startTime: 1 });
 scheduleSchema.index({ theater: 1, startTime: 1 });
+scheduleSchema.index({ status: 1 });
 
 module.exports = mongoose.model('Schedule', scheduleSchema); 

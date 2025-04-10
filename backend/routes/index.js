@@ -5,7 +5,7 @@ const userRoutes = require('./userRoutes');
 const bookingRoutes = require('./bookingRoutes');
 const theaterRoutes = require('./theaterRoutes');
 const seatRoutes = require('./seatRoutes');
-// const scheduleRoutes = require('./scheduleRoutes');
+const scheduleRoutes = require('./scheduleRoutes');
 
 
 // Routes
@@ -14,7 +14,7 @@ router.use(`/users`, userRoutes);
 router.use(`/bookings`, bookingRoutes);
 router.use('/theaters', theaterRoutes);
 router.use('/seats', seatRoutes);
-// router.use(`${API_VERSION}/schedules`, scheduleRoutes);
+router.use(`/schedules`, scheduleRoutes);
 
 // Health check route
 router.get('/health', (req, res) => {

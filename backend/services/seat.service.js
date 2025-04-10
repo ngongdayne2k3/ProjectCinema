@@ -1,5 +1,5 @@
 const SeatDAO = require('../dao/seat.dao');
-const {CreateSeatDTO, UpdateSeatDTO, BulkUpdateSeatDTO } = require('../dto/seat.dto');
+const { CreateSeatDTO, UpdateSeatDTO, BulkUpdateSeatDTO } = require('../dto/seat.dto');
 const logger = require('../config/logger');
 
 class SeatService {

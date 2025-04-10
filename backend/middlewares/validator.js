@@ -155,6 +155,80 @@ const theaterIdValidationRules = [
         .withMessage('ID rạp không hợp lệ')
 ];
 
+const scheduleValidationRules = [
+    body('movie')
+        .isMongoId()
+        .withMessage('ID phim không hợp lệ'),
+    body('theater')
+        .isMongoId()
+        .withMessage('ID rạp không hợp lệ'),
+    body('startTime')
+        .isISO8601()
+        .withMessage('Thời gian bắt đầu không hợp lệ'),
+    body('endTime')
+        .isISO8601()
+        .withMessage('Thời gian kết thúc không hợp lệ'),
+    body('format')
+        .isIn(['2D', '3D', 'IMAX'])
+        .withMessage('Định dạng không hợp lệ'),
+    body('prices')
+        .isArray()
+        .withMessage('Giá phải là một mảng'),
+    body('prices.*.type')
+        .isIn(['Standard', 'VIP'])
+        .withMessage('Loại ghế không hợp lệ'),
+    body('prices.*.price')
+        .isNumeric()
+        .withMessage('Giá phải là số'),
+    body('status')
+        .optional()
+        .isIn(['upcoming', 'showing', 'finished', 'canceled'])
+        .withMessage('Trạng thái không hợp lệ')
+];
+
+const updateScheduleValidationRules = [
+    body('startTime')
+        .optional()
+        .isISO8601()
+        .withMessage('Thời gian bắt đầu không hợp lệ'),
+    body('endTime')
+        .optional()
+        .isISO8601()
+        .withMessage('Thời gian kết thúc không hợp lệ'),
+    body('format')
+        .optional()
+        .isIn(['2D', '3D', 'IMAX'])
+        .withMessage('Định dạng không hợp lệ'),
+    body('prices')
+        .optional()
+        .isArray()
+        .withMessage('Giá phải là một mảng'),
+    body('prices.*.type')
+        .optional()
+        .isIn(['Standard', 'VIP'])
+        .withMessage('Loại ghế không hợp lệ'),
+    body('prices.*.price')
+        .optional()
+        .isNumeric()
+        .withMessage('Giá phải là số'),
+    body('status')
+        .optional()
+        .isIn(['upcoming', 'showing', 'finished', 'canceled'])
+        .withMessage('Trạng thái không hợp lệ')
+];
+
+const scheduleIdValidationRules = [
+    param('id')
+        .isMongoId()
+        .withMessage('ID lịch chiếu không hợp lệ')
+];
+
+const movieIdValidationRules = [
+    param('movieId')
+        .isMongoId()
+        .withMessage('ID phim không hợp lệ')
+];
+
 module.exports = {
     validate,
     movieValidationRules,
@@ -165,5 +239,9 @@ module.exports = {
     bulkUpdateSeatValidationRules,
     theaterValidationRules,
     idValidationRules,
-    theaterIdValidationRules
+    theaterIdValidationRules,
+    scheduleValidationRules,
+    updateScheduleValidationRules,
+    scheduleIdValidationRules,
+    movieIdValidationRules
 }; 

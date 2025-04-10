@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Fonte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Playfair+Display&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Sora:wght@100..800&display=swap" rel="stylesheet">
+
+    <!-- Nosso CSS -->
+    <link rel="stylesheet" href="dec24-style.css">
+
+    <title>Dezembro – 2024</title>
+</head>
+
+<body onload="renderCardsDez2(); renderCardsDez3(); renderCardsDez4()">
+
+    <script src="dec24-script.js"></script>
+
+    <div class="page">
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="..\..\1_index-page-files\index.html"">
+                    <img src="..\..\img\logo-without-title.png" alt="Logo" class="logo">
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="..\..\1_index-page-files\index.html">Página Inicial</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="..\..\2_contact-page-files\contact.html">Contato</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="..\..\3_about-page-files\about.html">Sobre</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline ml-auto">
+                        <input class="form-control rounded-pill mr-sm-2" type="search" placeholder="Pesquisar..." aria-label="Pesquisar">
+                        <button class="btn btn-outline-success rounded-pill my-2 my-sm-0" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="container-fluid" id="month-title-section">
+            <p>Dezembro – 2024</p>
+        </div>
+
+
+        <div class="container">
+            <br>
+            <h2>Lançamentos 12/12</h2>
+            <br>
+            <div class="row" id="card-container-dec2">
+                <!-- Cards da segunda semana de dezembro-2024 -->
+            </div>
+
+            <br><hr style="border: 1px solid #E09F3E; width: 100%;"><br>
+
+            <br>
+            <h2>Lançamentos 19/12</h2>
+            <br>
+            <div class="row" id="card-container-dec3">
+                <!-- Cards da terceira semana de dezembro-2024 -->
+            </div>
+
+            <br><hr style="border: 1px solid #E09F3E; width: 100%;"><br>
+
+            <br>
+            <h2>Lançamentos 26/12</h2>
+            <br>
+            <div class="row" id="card-container-dec4">
+                <!-- Cards da quarta semana de dezembro-2024 -->
+            </div>
+        </div>
+
+
+        <footer class="footer mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="logo">
+                            <img src="..\..\img\logo-footer.png" alt="Logo-Footer">
+                        </div>
+                        <div class="description">
+                            Obrigado por visitar nosso site.
+                            <br>
+                            João Pessoa - PB.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 text-center">
+                        <div class="contact">
+                            <h5>GitHub</h5>
+                            <a href="https://github.com/beaalmeidas/CineAlert-SiteApParaInternet"><i class="fab fa-github" style="font-size: 40px;"></i></a>
+                        </div>
+                        <div class="contact">
+                            <a href="#top" class="footer-button rounded-pill">Voltar ao topo</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 text-right">
+                        <div class="contact-form">
+                            <h4>Conecte-se Conosco</h4>
+                            <h6>Inscreva-se na nossa newsletter para se manter por dentro das notícias mais atualizadas do cinema.</h6>
+                            <form action="#" method="post" class="form-inline justify-content-end">
+                                <input type="email" class="form-control rounded-pill" name="email" placeholder="Endereço de e-mail" required>
+                                <button type="submit" class="btn btn-primary ml-2 rounded-pill">Assinar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row bottom-links">
+                    <div class="col-12 text-center">
+                        <p>&copy; 2024 CineAlert. Todos os direitos reservados.</p>
+                        <a href="..\..\privacy-policy.html">POLÍTICA DE PRIVACIDADE</a> | <a href="..\..\terms-conditions.html">TERMOS E CONDIÇÕES</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+    </div>
+
+
+    <!-- JavaScript do Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+</html>

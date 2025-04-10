@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán - Cinema</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+        }
+        .payment-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .section-title {
+            background: #1a1a1a;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #E09F3E;
+        }
+        .payment-section {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .form-control {
+            background-color: #333;
+            border: 1px solid #666;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .form-control:focus {
+            background-color: #444;
+            border-color: #E09F3E;
+            color: #fff;
+            box-shadow: none;
+        }
+        .payment-method {
+            background: #333;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .payment-method:hover {
+            background: #444;
+        }
+        .payment-method.selected {
+            border: 2px solid #E09F3E;
+        }
+        .payment-method img {
+            height: 30px;
+            margin-right: 10px;
+        }
+        .btn-primary {
+            background-color: #E09F3E;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #d18f2e;
+        }
+        .terms-checkbox {
+            margin-top: 20px;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+            padding: 15px 0;
+            border-bottom: 2px solid #E09F3E;
+        }
+        .navbar-brand img {
+            height: 40px;
+        }
+        .nav-link {
+            color: #fff !important;
+            margin: 0 15px;
+        }
+        .nav-link:hover {
+            color: #E09F3E !important;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        .footer .logo img {
+            height: 60px;
+            margin-bottom: 20px;
+        }
+        .footer .description {
+            color: #999;
+        }
+        .footer h4, .footer h5 {
+            color: #E09F3E;
+            margin-bottom: 20px;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #E09F3E;
+        }
+        .footer-button {
+            background: #E09F3E;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .footer-button:hover {
+            background: #d18f2e;
+            color: #fff;
+            text-decoration: none;
+        }
+        .bottom-links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+        .bottom-links a {
+            color: #999;
+            margin: 0 10px;
+        }
+        .bottom-links a:hover {
+            color: #E09F3E;
+        }
+        .social-links a {
+            font-size: 24px;
+            margin: 0 10px;
+            color: #E09F3E;
+        }
+        .social-links a:hover {
+            color: #fff;
+        }
+        hr {
+            border-color: #333;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="../1_index-page-files/index.html">
+                <img src="../img/logo-without-title.jpg" alt="Logo" class="logo">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../1_index-page-files/index.html">Trang chủ</a>
+                    </li>
+                </ul>
+                <a href="../6_Log-in_Register/login.html" class="btn btn-primary ml-3">
+                    <i class="fas fa-user"></i> Đăng nhập
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="payment-container">
+        <h2 class="section-title">Bước 2: HÌNH THỨC THANH TOÁN</h2>
+
+        <div class="payment-section">
+            <h4 class="mb-4">Thông tin người đặt</h4>
+            <form>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Họ và tên">
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="tel" class="form-control" placeholder="Số điện thoại">
+                </div>
+            </form>
+        </div>
+
+        <div class="payment-section">
+            <h4 class="mb-4">Chọn phương thức thanh toán</h4>
+            
+            <div class="payment-method">
+                <input type="radio" name="payment" id="atm">
+                <label for="atm">
+                    <img src="../img/atm-icon.png" alt="ATM">
+                    ATM card (Thẻ nội địa)
+                </label>
+            </div>
+
+            <div class="payment-method">
+                <input type="radio" name="payment" id="visa">
+                <label for="visa">
+                    <img src="../img/visa-icon.png" alt="Visa">
+                    Thẻ quốc tế (Visa, Master, Amex, JCB)
+                </label>
+            </div>
+
+            <div class="payment-method">
+                <input type="radio" name="payment" id="momo">
+                <label for="momo">
+                    <img src="../img/momo-icon.png" alt="Momo">
+                    Mã MMCGV - 5K
+                </label>
+            </div>
+
+            <div class="payment-method">
+                <input type="radio" name="payment" id="zalopay">
+                <label for="zalopay">
+                    <img src="../img/zalopay-icon.png" alt="ZaloPay">
+                    Nhập CGV giảm 10K cho lần đầu dùng
+                </label>
+            </div>
+
+            <div class="payment-method">
+                <input type="radio" name="payment" id="vnpay">
+                <label for="vnpay">
+                    <img src="../img/vnpay-icon.png" alt="VNPay">
+                    Nhập VNPAYCGV giảm đến 10K/bill
+                </label>
+            </div>
+
+            <div class="payment-method">
+                <input type="radio" name="payment" id="shopeepay">
+                <label for="shopeepay">
+                    <img src="../img/shopeepay-icon.png" alt="ShopeePay">
+                    ShopeePay - Giảm 5k
+                </label>
+            </div>
+
+            <div class="terms-checkbox">
+                <input type="checkbox" id="terms">
+                <label for="terms">Tôi đồng ý với điều khoản sử dụng và mua vé cho người có đủ tuổi phù hợp</label>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary">Thanh toán</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="logo">
+                        <img src="../img/logo-footer.jpg" alt="Logo-Footer">
+                    </div>
+                    <div class="description">
+                        Chào mừng bạn đến với Cinema.
+                        <br>
+                        Hãy cùng thưởng thức những bộ phim tuyệt vời!
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="contact">
+                        <h5>Liên hệ</h5>
+                        <p>Email: info@cinema.com</p>
+                        <p>Điện thoại: (123) 456-7890</p>
+                        <p>Địa chỉ: 123 Đường ABC, Quận XYZ</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="social-links">
+                        <h5>Theo dõi chúng tôi</h5>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Cinema. Tất cả quyền được bảo lưu.</p>
+                    <a href="../privacy-policy.html">Chính sách bảo mật</a> | 
+                    <a href="../terms-conditions.html">Điều khoản sử dụng</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', () => {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+                method.classList.add('selected');
+                method.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+        // Form validation and submission
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Add validation logic here
+        });
+    </script>
+</body>
+</html> 

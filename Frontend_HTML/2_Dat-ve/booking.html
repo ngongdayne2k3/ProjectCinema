@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt vé - Cinema</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+        }
+        .booking-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .movie-info {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .movie-poster {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .format-selection {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .format-btn {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .format-btn:hover, .format-btn.active {
+            background: #E09F3E;
+        }
+        .schedule-section {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .date-btn {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .date-btn:hover, .date-btn.active {
+            background: #E09F3E;
+        }
+        .time-slot {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .time-slot:hover, .time-slot.active {
+            background: #E09F3E;
+        }
+        .btn-primary {
+            background-color: #E09F3E;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #d18f2e;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <div class="movie-info">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="..\month-movie-images\1.png" alt="Movie Poster" class="movie-poster">
+                </div>
+                <div class="col-md-8">
+                    <h2>Avatar 3</h2>
+                    <p><strong>Thể loại:</strong> Khoa học viễn tưởng</p>
+                    <p><strong>Thời lượng:</strong> 3h</p>
+                    <p><strong>Đạo diễn:</strong> James Cameron</p>
+                    <p><strong>Diễn viên:</strong> Sam Worthington, Zoe Saldana, Sigourney Weaver</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="format-selection">
+            <h3>Chọn định dạng phim</h3>
+            <div class="formats">
+                <button class="format-btn active">2D</button>
+                <button class="format-btn">3D</button>
+                <button class="format-btn">IMAX 2D</button>
+                <button class="format-btn">IMAX 3D</button>
+            </div>
+        </div>
+
+        <div class="schedule-section">
+            <h3>Chọn ngày chiếu</h3>
+            <div class="dates mb-4">
+                <button class="date-btn active">Hôm nay</button>
+                <button class="date-btn">Ngày mai</button>
+                <button class="date-btn">Thứ 7</button>
+                <button class="date-btn">Chủ nhật</button>
+            </div>
+
+            <h3>Chọn suất chiếu</h3>
+            <div class="time-slots">
+                <button class="time-slot">10:00</button>
+                <button class="time-slot">12:30</button>
+                <button class="time-slot">15:00</button>
+                <button class="time-slot">17:30</button>
+                <button class="time-slot">20:00</button>
+                <button class="time-slot">22:30</button>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="seat-selection.html" class="btn btn-primary">Tiếp tục đặt vé</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Format selection
+        document.querySelectorAll('.format-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Date selection
+        document.querySelectorAll('.date-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Time slot selection
+        document.querySelectorAll('.time-slot').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html> 

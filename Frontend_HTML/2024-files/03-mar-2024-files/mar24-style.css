@@ -1,0 +1,209 @@
+/* Página Inteira */
+.page {
+    background-color: #181716;
+    color: white;
+    font-family: "Inter Tight", sans-serif;
+    font-optical-sizing: auto;
+}
+
+
+/* Logo */
+.logo {
+    width: 120px;
+}
+
+
+/* Navegação */
+.navbar {
+    background-color: #181716;
+    color: white;
+    padding: 0;
+    height: 60px;
+}
+.navbar-brand {
+    color: white;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    color: white;
+    margin: 20px;
+}
+.nav-item:hover {
+    font-weight: bold;
+    border-bottom: 3px solid #9E2A2B;
+}
+.navbar-nav .nav-link {
+    color: #fff;
+}
+.navbar-nav .nav-link.active {
+    color:white;
+    border-bottom: 3px solid #9E2A2B;
+}
+.navbar .btn-outline-success {
+    color: #9E2A2B !important;
+    border-color: #9E2A2B !important;
+    border: 2px solid #9E2A2B !important;
+    background-color: #181716 !important;
+}
+.navbar .btn-outline-success:hover {
+    background-color: #a72828 !important;
+    color: #fff !important;
+}
+
+
+/* Rodapé */
+.footer {
+    background-color: #1d1d1d;
+    color: #fff;
+    padding: 40px 0;
+}
+.footer .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    width: 120px;
+}
+.footer .logo img {
+    width: 150px;
+    height: auto;
+    margin-right: 5px;
+}
+.footer .description {
+    margin-bottom: 20px;
+}
+.footer .social-media a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 24px;
+}
+.footer .contact {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.footer .contact-form input[type="email"] {
+    border: none;
+    border-radius: 0;
+    padding: 10px;
+    display: inline-block;
+    width: auto;
+}
+.footer .contact-form button {
+    background-color: #ff4081;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: inline-block;
+}
+.footer .bottom-links {
+    margin-top: 20px;
+}
+.footer .bottom-links a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+}
+.footer .btn-primary {
+    color: #9E2A2B;
+    border-color: #9E2A2B;
+    border: 2px solid #9E2A2B
+}
+.footer .btn-primary:hover {
+    background-color: #a72828;
+    color: #fff;
+}
+.footer .footer-button {
+    color: #fff;
+    background-color: #1d1d1d;
+    border-color: #9E2A2B;
+    border: 2px solid #9E2A2B;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+.footer .footer-button:hover {
+    background-color: #a72828;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+/* Estilização dos cards de filme */
+.page #month-title-section {
+    text-align: center;
+    font-size: 70px;
+    font-weight: bold;
+    color: #579caf;
+    padding: 80px;
+    margin: -10px -10px 0 -10px;
+}
+
+
+.page h2 {
+    color: #f3a261;
+}
+
+
+.card {
+    background-color: #343a40;
+    border: none;
+}
+
+.card-title {
+    color: #f8f9fa;
+}
+
+.card-text {
+    color: #ced4da;
+}
+
+.btn {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #f8f9fa;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.text-primary {
+    color: #17a2b8;
+}
+
+.text-info {
+    color: #138496;
+}
+
+.text-warning {
+    color: #d39e00;
+}
+
+.text-success {
+    color: #218838;
+}
+
+.btn-primary {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-info {
+    background-color: #138496;
+    border-color: #138496;
+}
+
+.btn-warning {
+    background-color: #d39e00;
+    border-color: #d39e00;
+}
+
+.btn-success {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+
+/* ------------------------------------------------------------------------------------------- */

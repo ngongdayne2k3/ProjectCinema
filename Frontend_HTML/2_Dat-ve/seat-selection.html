@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chọn ghế - Cinema</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+        }
+        .booking-header {
+            background: #1a1a1a;
+            padding: 15px 0;
+            text-align: center;
+            border-bottom: 2px solid #E09F3E;
+        }
+        .cinema-info {
+            background: #1a1a1a;
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .screen-container {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .screen {
+            width: 80%;
+            height: 50px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, #ffffff, #666666);
+            border-top-left-radius: 100%;
+            border-top-right-radius: 100%;
+            transform: perspective(200px) rotateX(-10deg);
+            position: relative;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .screen::after {
+            content: 'MÀN HÌNH';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 14px;
+        }
+        .seats-container {
+            max-width: 900px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .seat-row {
+            display: flex;
+            justify-content: center;
+            margin: 5px 0;
+        }
+        .seat {
+            width: 30px;
+            height: 30px;
+            margin: 3px;
+            border: 1px solid #666;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        .seat.available {
+            background: #333;
+            color: #fff;
+        }
+        .seat.selected {
+            background: #E09F3E;
+            border-color: #E09F3E;
+            color: #fff;
+        }
+        .seat.vip {
+            background: #333;
+            border-color: #ff0000;
+            color: #fff;
+        }
+        .seat.sweetbox {
+            background: #333;
+            border-color: #ff69b4;
+            color: #fff;
+            width: 60px;
+        }
+        .seat.unavailable {
+            background: #666;
+            cursor: not-allowed;
+            color: #999;
+        }
+        .seat-legend {
+            margin: 30px auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        .legend-box.checked {
+            background: #666;
+        }
+        .legend-box.selected {
+            background: #E09F3E;
+        }
+        .legend-box.normal {
+            background: #333;
+            border: 1px solid #666;
+        }
+        .legend-box.vip {
+            background: #333;
+            border: 1px solid #ff0000;
+        }
+        .legend-box.sweetbox {
+            background: #333;
+            border: 1px solid #ff69b4;
+        }
+        .btn-continue {
+            background: #E09F3E;
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn-continue:hover {
+            background: #d18f2e;
+            color: #fff;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+            padding: 15px 0;
+            border-bottom: 2px solid #E09F3E;
+        }
+        .navbar-brand img {
+            height: 40px;
+        }
+        .nav-link {
+            color: #fff !important;
+            margin: 0 15px;
+        }
+        .nav-link:hover {
+            color: #E09F3E !important;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+        .footer .logo img {
+            height: 60px;
+            margin-bottom: 20px;
+        }
+        .footer .description {
+            color: #999;
+        }
+        .footer h4, .footer h5 {
+            color: #E09F3E;
+            margin-bottom: 20px;
+        }
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #E09F3E;
+        }
+        .footer-button {
+            background: #E09F3E;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .footer-button:hover {
+            background: #d18f2e;
+            color: #fff;
+            text-decoration: none;
+        }
+        .bottom-links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+        .bottom-links a {
+            color: #999;
+            margin: 0 10px;
+        }
+        .bottom-links a:hover {
+            color: #E09F3E;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="../1_index-page-files/index.html">
+                <img src="../img/logo-without-title.jpg" alt="Logo" class="logo">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../1_index-page-files/index.html">Trang chủ</a>
+                    </li>
+                </ul>
+                <a href="../6_Log-in_Register/login.html" class="btn btn-primary ml-3">
+                    <i class="fas fa-user"></i> Đăng nhập
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="booking-header">
+        <h2>BOOKING ONLINE</h2>
+    </div>
+
+    <div class="container">
+        <div class="cinema-info">
+            <h5>CGV Hùng Vương Plaza | Cinema 6 | Số ghế (256/262)</h5>
+            <p>11/04/2025 09:10 ~ 11/04/2025 11:41</p>
+        </div>
+
+        <div class="screen-container">
+            <div class="screen"></div>
+        </div>
+
+        <div class="seats-container">
+            <div class="seat-row">
+                <div class="seat available">A18</div>
+                <div class="seat available">A17</div>
+                <div class="seat available">A16</div>
+                <div class="seat available">A15</div>
+                <div class="seat available">A14</div>
+                <div class="seat available">A13</div>
+                <div class="seat available">A12</div>
+                <div class="seat available">A11</div>
+                <div class="seat available">A10</div>
+                <div class="seat available">A9</div>
+                <div class="seat available">A8</div>
+                <div class="seat available">A7</div>
+                <div class="seat available">A6</div>
+                <div class="seat available">A5</div>
+                <div class="seat available">A4</div>
+            </div>
+            <!-- Repeat similar structure for rows B through P -->
+            <div class="seat-row">
+                <div class="seat sweetbox">P1</div>
+                <div class="seat sweetbox">P2</div>
+                <div class="seat vip">P3</div>
+                <div class="seat vip">P4</div>
+                <div class="seat vip">P5</div>
+                <div class="seat vip">P6</div>
+                <div class="seat vip">P7</div>
+                <div class="seat vip">P8</div>
+                <div class="seat vip">P9</div>
+                <div class="seat vip">P10</div>
+                <div class="seat vip">P11</div>
+                <div class="seat vip">P12</div>
+                <div class="seat vip">P13</div>
+                <div class="seat sweetbox">P14</div>
+                <div class="seat sweetbox">P15</div>
+            </div>
+        </div>
+
+        <div class="seat-legend">
+            <div class="legend-item">
+                <div class="legend-box checked"></div>
+                <span>Đã chọn</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box normal"></div>
+                <span>Thường</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box vip"></div>
+                <span>VIP</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box sweetbox"></div>
+                <span>Sweetbox</span>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <a href="../3_Thanh-toan/payment.html" class="btn btn-continue">Tiếp tục</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="logo">
+                        <img src="../img/logo-footer.jpg" alt="Logo-Footer">
+                    </div>
+                    <div class="description">
+                        Chào mừng bạn đến với Cinema.
+                        <br>
+                        Hãy cùng thưởng thức những bộ phim tuyệt vời!
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="contact">
+                        <h5>Liên hệ</h5>
+                        <p>Email: info@cinema.com</p>
+                        <p>Điện thoại: (123) 456-7890</p>
+                        <p>Địa chỉ: 123 Đường ABC, Quận XYZ</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="social-links">
+                        <h5>Theo dõi chúng tôi</h5>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Cinema. Tất cả quyền được bảo lưu.</p>
+                    <a href="../privacy-policy.html">Chính sách bảo mật</a> | 
+                    <a href="../terms-conditions.html">Điều khoản sử dụng</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Seat selection functionality
+        let selectedSeats = [];
+        
+        document.querySelectorAll('.seat.available, .seat.vip, .seat.sweetbox').forEach(seat => {
+            seat.addEventListener('click', () => {
+                if (!seat.classList.contains('unavailable')) {
+                    if (seat.classList.contains('selected')) {
+                        seat.classList.remove('selected');
+                        selectedSeats = selectedSeats.filter(s => s !== seat.textContent);
+                    } else {
+                        seat.classList.add('selected');
+                        selectedSeats.push(seat.textContent);
+                    }
+                }
+            });
+        });
+
+        // Continue button functionality
+        document.querySelector('.btn-continue').addEventListener('click', (e) => {
+            if (selectedSeats.length === 0) {
+                e.preventDefault();
+                alert('Vui lòng chọn ít nhất một ghế');
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,220 @@
+/* Página Inteira */
+.page {
+    background-color: #181716;
+    color: white;
+    font-family: "Inter Tight", sans-serif;
+    font-optical-sizing: auto;
+}
+
+
+/* Logo */
+.logo {
+    width: 120px;
+}
+
+
+/* Navegação */
+.navbar {
+    background-color: #181716;
+    color: white;
+    padding: 0;
+    height: 60px;
+}
+.navbar-brand {
+    color: white;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    color: white;
+    margin: 20px;
+}
+.nav-item:hover {
+    font-weight: bold;
+    border-bottom: 3px solid #9E2A2B;
+}
+.navbar-nav .nav-link {
+    color: #fff;
+}
+.navbar-nav .nav-link.active {
+    color:white;
+    border-bottom: 3px solid #9E2A2B;
+}
+.navbar .btn-outline-success {
+    color: #9E2A2B;
+    border-color: #9E2A2B;
+    border: 2px solid #9E2A2B
+}
+.navbar .btn-outline-success:hover {
+    background-color: #a72828;
+    color: #fff;
+}
+
+
+/* Rodapé */
+.footer {
+    background-color: #1d1d1d;
+    color: #fff;
+    padding: 40px 0;
+}
+.footer .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    width: 120px;
+}
+.footer .logo img {
+    width: 150px;
+    height: auto;
+    margin-right: 5px;
+}
+.footer .description {
+    margin-bottom: 20px;
+}
+.footer .social-media a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 24px;
+}
+.footer .contact {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.footer .contact-form input[type="email"] {
+    border: none;
+    border-radius: 0;
+    padding: 10px;
+    display: inline-block;
+    width: auto;
+}
+.footer .contact-form button {
+    background-color: #ff4081;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: inline-block;
+}
+.footer .bottom-links {
+    margin-top: 20px;
+}
+.footer .bottom-links a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+}
+.footer .btn-primary {
+    color: #9E2A2B;
+    border-color: #9E2A2B;
+    border: 2px solid #9E2A2B
+}
+.footer .btn-primary:hover {
+    background-color: #a72828;
+    color: #fff;
+}
+.footer .footer-button {
+    color: #fff;
+    background-color: #1d1d1d;
+    border-color: #9E2A2B;
+    border: 2px solid #9E2A2B;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+.footer .footer-button:hover {
+    background-color: #a72828;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+/* ------------------------------------------------------------------------------------------- */
+
+
+/* Divisão da Saudação da Home */
+.index-division {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-right: 20px;
+}
+.index-division > div {
+    flex: 1;
+    padding: 20px;
+    text-align: justify;
+    font-size: 15px;
+}
+
+
+/* Saudações */
+.index-welcome h1 {
+    font-size: 80px;
+    color: #579caf;
+}
+
+
+/* Botão de navegar pelo catálogo */
+.btn-navigate-catalog {
+    color: #fff;
+    background-color: #9E2A2B;
+    border-color: #9E2A2B;
+    border: 2px solid #9E2A2B;
+    font-size: 16px;
+    padding: 10px 20px;
+}
+.btn-navigate-catalog:hover {
+    background-color: #a72828;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+/* Título da seção de páginas de cada mês */
+.movie-catalogue h1 {
+    color: #579caf;
+}
+
+
+/* Grid de páginas de cada mês */
+.monthly-section {
+    padding: 50px 0;
+}
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+.card:hover {
+    transform: scale(1.05);
+}
+.card-title {
+    font-size: 25px;
+    font-weight: bold;
+}
+.btn-primary {
+    background-color: #9E2A2B;
+    border-color: #9E2A2B;
+}
+.btn-primary:hover {
+    background-color: #a72828;
+    border-color: #a72828;
+}
+.card-bg {
+    background-size: cover;
+    background-position: center;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+.card-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+
+

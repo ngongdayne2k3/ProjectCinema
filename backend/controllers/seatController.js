@@ -1,80 +1,258 @@
-const seatService = require('../services/seat.service');
+const SeatService = require('../services/seat.service');
+const { CreateSeatDTO, UpdateSeatDTO, BulkUpdateSeatDTO } = require('../dto/seat.dto');
 const logger = require('../config/logger');
 
 class SeatController {
-    async getSeatsByTheater(req, res) {
+    static async createSeat(req, res) {
         try {
-            const seats = await seatService.getSeatsByTheater(req.params.theaterId);
-            res.json(seats);
+            const seat = await SeatService.createSeat(req.body);
+            res.status(201).json({
+                success: true,
+                data: seat
+            });
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách ghế: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error(`Error in createSeat controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi tạo ghế',
+                error: error.message
+            });
         }
     }
 
-    async getSeatById(req, res) {
+    static async getSeat(req, res) {
         try {
-            const seat = await seatService.getSeatById(req.params.id);
+            const seat = await SeatService.getSeatById(req.params.id);
             if (!seat) {
-                return res.status(404).json({ message: 'Không tìm thấy ghế' });
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy ghế'
+                });
             }
-            res.json(seat);
+            res.status(200).json({
+                success: true,
+                data: seat
+            });
         } catch (error) {
-            logger.error(`Lỗi lấy thông tin ghế: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error(`Error in getSeat controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi lấy thông tin ghế',
+                error: error.message
+            });
         }
     }
 
-    async updateSeat(req, res) {
+    static async getSeatsByTheater(req, res) {
         try {
-            const seat = await seatService.updateSeat(req.params.id, req.body);
+            const seats = await SeatService.getSeatsByTheater(req.params.theaterId);
+            res.status(200).json({
+                success: true,
+                data: seats
+            });
+        } catch (error) {
+            logger.error(`Error in getSeatsByTheater controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi lấy danh sách ghế',
+                error: error.message
+            });
+        }
+    }
+
+    static async updateSeat(req, res) {
+        try {
+            const seat = await SeatService.updateSeat(req.params.id, req.body);
             if (!seat) {
-                return res.status(404).json({ message: 'Không tìm thấy ghế' });
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy ghế'
+                });
             }
-            logger.info(`Cập nhật thông tin ghế: ${seat._id}`);
-            res.json(seat);
+            res.status(200).json({
+                success: true,
+                data: seat
+            });
         } catch (error) {
-            logger.error(`Lỗi cập nhật thông tin ghế: ${error.message}`);
-            res.status(400).json({ message: error.message });
+            logger.error(`Error in updateSeat controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi cập nhật ghế',
+                error: error.message
+            });
         }
     }
 
-    async bulkUpdateSeats(req, res) {
+    static async deleteSeat(req, res) {
         try {
-            const result = await seatService.bulkUpdateSeats(req.body);
-            logger.info(`Cập nhật hàng loạt ghế thành công`);
-            res.json(result);
-        } catch (error) {
-            logger.error(`Lỗi cập nhật hàng loạt ghế: ${error.message}`);
-            res.status(400).json({ message: error.message });
-        }
-    }
-
-    async deleteSeat(req, res) {
-        try {
-            const seat = await seatService.deleteSeat(req.params.id);
+            const seat = await SeatService.deleteSeat(req.params.id);
             if (!seat) {
-                return res.status(404).json({ message: 'Không tìm thấy ghế' });
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy ghế'
+                });
             }
-            logger.info(`Xóa ghế: ${seat._id}`);
-            res.json({ message: 'Xóa ghế thành công' });
+            res.status(200).json({
+                success: true,
+                message: 'Xóa ghế thành công'
+            });
         } catch (error) {
-            logger.error(`Lỗi xóa ghế: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error(`Error in deleteSeat controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi xóa ghế',
+                error: error.message
+            });
         }
     }
 
-    async deleteManySeats(req, res) {
+    static async deleteManySeats(req, res) {
         try {
-            const { seatIds } = req.body;
-            await seatService.deleteManySeats(seatIds);
-            logger.info(`Xóa hàng loạt ghế thành công`);
-            res.json({ message: 'Xóa ghế thành công' });
+            await SeatService.deleteManySeats(req.body.seatIds);
+            res.status(200).json({
+                success: true,
+                message: 'Xóa nhiều ghế thành công'
+            });
         } catch (error) {
-            logger.error(`Lỗi xóa hàng loạt ghế: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error(`Error in deleteManySeats controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi xóa nhiều ghế',
+                error: error.message
+            });
+        }
+    }
+
+    static async restoreSeat(req, res) {
+        try {
+            const seat = await SeatService.restoreSeat(req.params.id);
+            if (!seat) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy ghế'
+                });
+            }
+            res.status(200).json({
+                success: true,
+                data: seat
+            });
+        } catch (error) {
+            logger.error(`Error in restoreSeat controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi khôi phục ghế',
+                error: error.message
+            });
+        }
+    }
+
+    static async restoreManySeats(req, res) {
+        try {
+            await SeatService.restoreManySeats(req.body.seatIds);
+            res.status(200).json({
+                success: true,
+                message: 'Khôi phục nhiều ghế thành công'
+            });
+        } catch (error) {
+            logger.error(`Error in restoreManySeats controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi khôi phục nhiều ghế',
+                error: error.message
+            });
+        }
+    }
+
+    static async getAvailableSeats(req, res) {
+        try {
+            const seats = await SeatService.getAvailableSeats(req.params.theaterId);
+            res.status(200).json({
+                success: true,
+                data: seats
+            });
+        } catch (error) {
+            logger.error(`Error in getAvailableSeats controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi lấy danh sách ghế trống',
+                error: error.message
+            });
+        }
+    }
+
+    static async getSeatsByType(req, res) {
+        try {
+            const seats = await SeatService.getSeatsByType(req.params.theaterId, req.params.type);
+            res.status(200).json({
+                success: true,
+                data: seats
+            });
+        } catch (error) {
+            logger.error(`Error in getSeatsByType controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi lấy danh sách ghế theo loại',
+                error: error.message
+            });
+        }
+    }
+
+    static async updateSeatStatus(req, res) {
+        try {
+            const seat = await SeatService.updateSeatStatus(req.params.id, req.body.status);
+            if (!seat) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Không tìm thấy ghế'
+                });
+            }
+            res.status(200).json({
+                success: true,
+                data: seat
+            });
+        } catch (error) {
+            logger.error(`Error in updateSeatStatus controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi cập nhật trạng thái ghế',
+                error: error.message
+            });
+        }
+    }
+
+    static async bulkUpdateSeats(req, res) {
+        try {
+            await SeatService.bulkUpdateSeats(req.body);
+            res.status(200).json({
+                success: true,
+                message: 'Cập nhật nhiều ghế thành công'
+            });
+        } catch (error) {
+            logger.error(`Error in bulkUpdateSeats controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi cập nhật nhiều ghế',
+                error: error.message
+            });
+        }
+    }
+
+    static async getDeletedSeats(req, res) {
+        try {
+            const seats = await SeatService.getDeletedSeats(req.params.theaterId);
+            res.status(200).json({
+                success: true,
+                data: seats
+            });
+        } catch (error) {
+            logger.error(`Error in getDeletedSeats controller: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi khi lấy danh sách ghế đã xóa',
+                error: error.message
+            });
         }
     }
 }
 
-module.exports = new SeatController(); 
+module.exports = SeatController; 

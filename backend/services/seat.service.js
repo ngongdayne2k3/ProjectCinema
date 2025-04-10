@@ -1,51 +1,130 @@
-const seatDAO = require('../dao/seat.dao');
-const { SeatDTO, CreateSeatDTO, UpdateSeatDTO, BulkUpdateSeatDTO } = require('../dto/seat.dto');
+const SeatDAO = require('../dao/seat.dao');
+const {CreateSeatDTO, UpdateSeatDTO, BulkUpdateSeatDTO } = require('../dto/seat.dto');
+const logger = require('../config/logger');
 
 class SeatService {
-    async createSeat(seatData) {
-        const createSeatDTO = new CreateSeatDTO(seatData);
-        const seat = await seatDAO.create(createSeatDTO);
-        return new SeatDTO(seat);
+    static async createSeat(seatData) {
+        try {
+            const createSeatDTO = new CreateSeatDTO(seatData);
+            return await SeatDAO.create(createSeatDTO);
+        } catch (error) {
+            logger.error(`Error in createSeat service: ${error.message}`);
+            throw error;
+        }
     }
 
-    async getSeatById(id) {
-        const seat = await seatDAO.findById(id);
-        return seat ? new SeatDTO(seat) : null;
+    static async getSeatById(id) {
+        try {
+            return await SeatDAO.findById(id);
+        } catch (error) {
+            logger.error(`Error in getSeatById service: ${error.message}`);
+            throw error;
+        }
     }
 
-    async getSeatsByTheater(theaterId) {
-        const seats = await seatDAO.findByTheater(theaterId);
-        return seats.map(seat => new SeatDTO(seat));
+    static async getSeatsByTheater(theaterId) {
+        try {
+            return await SeatDAO.findByTheater(theaterId);
+        } catch (error) {
+            logger.error(`Error in getSeatsByTheater service: ${error.message}`);
+            throw error;
+        }
     }
 
-    async updateSeat(id, seatData) {
-        const updateSeatDTO = new UpdateSeatDTO(seatData);
-        const seat = await seatDAO.update(id, updateSeatDTO);
-        return seat ? new SeatDTO(seat) : null;
+    static async updateSeat(id, seatData) {
+        try {
+            const updateSeatDTO = new UpdateSeatDTO(seatData);
+            return await SeatDAO.update(id, updateSeatDTO);
+        } catch (error) {
+            logger.error(`Error in updateSeat service: ${error.message}`);
+            throw error;
+        }
     }
 
-    async bulkUpdateSeats(updateData) {
-        const bulkUpdateDTO = new BulkUpdateSeatDTO(updateData);
-        const result = await seatDAO.bulkUpdate(bulkUpdateDTO.seatIds, {
-            type: bulkUpdateDTO.type,
-            status: bulkUpdateDTO.status
-        });
-        return result;
+    static async deleteSeat(id) {
+        try {
+            return await SeatDAO.delete(id);
+        } catch (error) {
+            logger.error(`Error in deleteSeat service: ${error.message}`);
+            throw error;
+        }
     }
 
-    async deleteSeat(id) {
-        const seat = await seatDAO.softDelete(id);
-        return seat ? new SeatDTO(seat) : null;
+    static async deleteManySeats(seatIds) {
+        try {
+            return await SeatDAO.deleteMany(seatIds);
+        } catch (error) {
+            logger.error(`Error in deleteManySeats service: ${error.message}`);
+            throw error;
+        }
     }
 
-    async deleteManySeats(seatIds) {
-        return await seatDAO.softDeleteMany(seatIds);
+    static async restoreSeat(id) {
+        try {
+            return await SeatDAO.restore(id);
+        } catch (error) {
+            logger.error(`Error in restoreSeat service: ${error.message}`);
+            throw error;
+        }
     }
 
-    async generateSeatsForTheater(theaterId, rows, seatsPerRow) {
-        const seats = await seatDAO.generateSeats(theaterId, rows, seatsPerRow);
-        return seats.map(seat => new SeatDTO(seat));
+    static async restoreManySeats(seatIds) {
+        try {
+            return await SeatDAO.restoreMany(seatIds);
+        } catch (error) {
+            logger.error(`Error in restoreManySeats service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async getAvailableSeats(theaterId) {
+        try {
+            return await SeatDAO.findAvailableSeats(theaterId);
+        } catch (error) {
+            logger.error(`Error in getAvailableSeats service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async getSeatsByType(theaterId, type) {
+        try {
+            return await SeatDAO.findSeatsByType(theaterId, type);
+        } catch (error) {
+            logger.error(`Error in getSeatsByType service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async updateSeatStatus(id, status) {
+        try {
+            return await SeatDAO.updateSeatStatus(id, status);
+        } catch (error) {
+            logger.error(`Error in updateSeatStatus service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async bulkUpdateSeats(updateData) {
+        try {
+            const bulkUpdateDTO = new BulkUpdateSeatDTO(updateData);
+            return await SeatDAO.bulkUpdate(bulkUpdateDTO.seatIds, {
+                type: bulkUpdateDTO.type,
+                status: bulkUpdateDTO.status
+            });
+        } catch (error) {
+            logger.error(`Error in bulkUpdateSeats service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async getDeletedSeats(theaterId) {
+        try {
+            return await SeatDAO.findDeletedSeats(theaterId);
+        } catch (error) {
+            logger.error(`Error in getDeletedSeats service: ${error.message}`);
+            throw error;
+        }
     }
 }
 
-module.exports = new SeatService();
+module.exports = SeatService;

@@ -1,70 +1,121 @@
 const Seat = require('../models/Seat');
+const { SeatDTO, CreateSeatDTO } = require('../dto/seat.dto');
+const logger = require('../config/logger');
 
 class SeatDAO {
-    async create(seatData) {
-        const seat = new Seat(seatData);
-        return await seat.save();
-    }
-
-    async createMany(seatsData) {
-        return await Seat.insertMany(seatsData);
-    }
-
-    async findById(id) {
-        return await Seat.findById(id);
-    }
-
-    async findByTheater(theaterId) {
-        return await Seat.find({ theater: theaterId, isDeleted: false });
-    }
-
-    async update(id, seatData) {
-        return await Seat.findByIdAndUpdate(id, seatData, { new: true });
-    }
-
-    async bulkUpdate(seatIds, updateData) {
-        return await Seat.updateMany(
-            { _id: { $in: seatIds } },
-            updateData,
-            { new: true }
-        );
-    }
-
-    async softDelete(id) {
-        return await Seat.findByIdAndUpdate(
-            id,
-            { isDeleted: true },
-            { new: true }
-        );
-    }
-
-    async softDeleteMany(seatIds) {
-        return await Seat.updateMany(
-            { _id: { $in: seatIds } },
-            { isDeleted: true },
-            { new: true }
-        );
-    }
-
-    async generateSeats(theaterId, rows, seatsPerRow) {
-        const seats = [];
-        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-
-        for (let i = 0; i < rows; i++) {
-            const row = alphabet[i];
-            for (let j = 1; j <= seatsPerRow; j++) {
-                seats.push({
-                    theater: theaterId,
-                    row: row,
-                    number: j,
-                    type: 'Standard',
-                    status: 'Available'
-                });
-            }
+    static async create(seatData) {
+        try {
+            const seat = new Seat(seatData);
+            await seat.save();
+            return SeatDTO.toDTO(seat);
+        } catch (error) {
+            logger.error(`Lỗi tạo ghế trong DAO: ${error.message}`);
+            throw error;
         }
+    }
 
-        return await this.createMany(seats);
+    static async createMany(seatsData) {
+        try {
+            const seats = await Seat.insertMany(seatsData);
+            return SeatDTO.toDTOList(seats);
+        } catch (error) {
+            logger.error(`Lỗi tạo nhiều ghế trong DAO: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async findById(id) {
+        const seat = await Seat.findById(id);
+        return seat ? SeatDTO.toDTO(seat) : null;
+    }
+
+    static async findByTheater(theaterId) {
+        const seats = await Seat.find({ 
+            theater: theaterId,
+            isDeleted: false 
+        });
+        return SeatDTO.toDTOList(seats);
+    }
+
+    static async update(id, seatData) {
+        const seat = await Seat.findByIdAndUpdate(
+            id,
+            { $set: seatData },
+            { new: true }
+        );
+        return seat ? SeatDTO.toDTO(seat) : null;
+    }
+
+    static async delete(id) {
+        const seat = await Seat.findByIdAndUpdate(
+            id,
+            { $set: { isDeleted: true } },
+            { new: true }
+        );
+        return seat ? SeatDTO.toDTO(seat) : null;
+    }
+
+    static async deleteMany(seatIds) {
+        const seats = await Seat.updateMany(
+            { _id: { $in: seatIds } },
+            { $set: { isDeleted: true } },
+            { new: true }
+        );
+        return seats;
+    }
+
+    static async restore(id) {
+        const seat = await Seat.findByIdAndUpdate(
+            id,
+            { $set: { isDeleted: false } },
+            { new: true }
+        );
+        return seat ? SeatDTO.toDTO(seat) : null;
+    }
+
+    static async restoreMany(seatIds) {
+        const seats = await Seat.updateMany(
+            { _id: { $in: seatIds } },
+            { $set: { isDeleted: false } },
+            { new: true }
+        );
+        return seats;
+    }
+
+    static async findAvailableSeats(theaterId) {
+        const seats = await Seat.find({ 
+            theater: theaterId,
+            status: 'Available',
+            isDeleted: false 
+        });
+        return SeatDTO.toDTOList(seats);
+    }
+
+    static async findSeatsByType(theaterId, type) {
+        const seats = await Seat.find({ 
+            theater: theaterId,
+            type: type,
+            isDeleted: false 
+        });
+        return SeatDTO.toDTOList(seats);
+    }
+
+    static async updateSeatStatus(id, status) {
+        const seat = await Seat.findByIdAndUpdate(
+            id,
+            { $set: { status } },
+            { new: true }
+        );
+        return seat ? SeatDTO.toDTO(seat) : null;
+    }
+
+    static async findDeletedSeats(theaterId) {
+        const seats = await Seat.find({ 
+            theater: theaterId,
+            isDeleted: true 
+        });
+        return SeatDTO.toDTOList(seats);
     }
 }
 
-module.exports = new SeatDAO(); 
+module.exports = SeatDAO; 

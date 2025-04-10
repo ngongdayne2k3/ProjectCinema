@@ -1,68 +1,114 @@
-const theaterDAO = require('../dao/theater.dao');
-const seatService = require('./seat.service');
-const { TheaterDTO, CreateTheaterDTO, UpdateTheaterDTO } = require('../dto/theater.dto');
+const TheaterDAO = require('../dao/theater.dao');
+const SeatDAO = require('../dao/seat.dao');
+const { TheaterDTO, CreateTheaterDTO } = require('../dto/theater.dto');
 const logger = require('../config/logger');
 
 class TheaterService {
-    async createTheater(theaterData) {
+    static async createTheater(theaterData) {
         try {
+            // Validate theater data
             const createTheaterDTO = new CreateTheaterDTO(theaterData);
-            const theater = await theaterDAO.create(createTheaterDTO);
-
-            // Tự động tạo ghế cho rạp mới
-            await seatService.generateSeatsForTheater(
-                theater._id,
-                theater.rows,
-                theater.seatsPerRow
-            );
-
-            return TheaterDTO.toDTO(theater);
+            
+            // Create theater
+            const theater = await TheaterDAO.create(createTheaterDTO);
+            
+            // Generate seats based on rows and seatsPerRow
+            await this.generateSeatsForTheater(theater._id, theater.rows, theater.seatsPerRow);
+            
+            return theater;
         } catch (error) {
-            logger.error(`Lỗi tạo rạp: ${error.message}`);
+            logger.error(`Error in createTheater service: ${error.message}`);
             throw error;
         }
     }
 
-    async getTheaterById(id) {
+    static async getTheaterById(id) {
         try {
-            const theater = await theaterDAO.findById(id);
-            return theater ? TheaterDTO.toDTO(theater) : null;
+            return await TheaterDAO.findById(id);
         } catch (error) {
-            logger.error(`Lỗi lấy thông tin rạp: ${error.message}`);
+            logger.error(`Error in getTheaterById service: ${error.message}`);
             throw error;
         }
     }
 
-    async getAllTheaters(query = {}) {
+    static async getAllTheaters() {
         try {
-            const theaters = await theaterDAO.findAll(query);
-            return TheaterDTO.toDTOList(theaters);
+            return await TheaterDAO.findAll();
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách rạp: ${error.message}`);
+            logger.error(`Error in getAllTheaters service: ${error.message}`);
             throw error;
         }
     }
 
-    async updateTheater(id, theaterData) {
+    static async updateTheater(id, theaterData) {
         try {
-            const updateTheaterDTO = new UpdateTheaterDTO(theaterData);
-            const theater = await theaterDAO.update(id, updateTheaterDTO);
-            return theater ? TheaterDTO.toDTO(theater) : null;
+            return await TheaterDAO.update(id, theaterData);
         } catch (error) {
-            logger.error(`Lỗi cập nhật rạp: ${error.message}`);
+            logger.error(`Error in updateTheater service: ${error.message}`);
             throw error;
         }
     }
 
-    async deleteTheater(id) {
+    static async deleteTheater(id) {
         try {
-            const theater = await theaterDAO.softDelete(id);
-            return theater ? TheaterDTO.toDTO(theater) : null;
+            // Soft delete theater
+            const theater = await TheaterDAO.delete(id);
+            
+            // Soft delete all seats in this theater
+            const seats = await SeatDAO.findByTheater(id);
+            const seatIds = seats.map(seat => seat._id);
+            await SeatDAO.deleteMany(seatIds);
+            
+            return theater;
         } catch (error) {
-            logger.error(`Lỗi xóa rạp: ${error.message}`);
+            logger.error(`Error in deleteTheater service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async getTheatersByFormat(format) {
+        try {
+            return await TheaterDAO.findByFormat(format);
+        } catch (error) {
+            logger.error(`Error in getTheatersByFormat service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async getActiveTheaters() {
+        try {
+            return await TheaterDAO.findActiveTheaters();
+        } catch (error) {
+            logger.error(`Error in getActiveTheaters service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async generateSeatsForTheater(theaterId, rows, seatsPerRow) {
+        try {
+            const seats = [];
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+            for (let i = 0; i < rows; i++) {
+                const row = alphabet[i];
+                for (let j = 1; j <= seatsPerRow; j++) {
+                    seats.push({
+                        theater: theaterId,
+                        row: row,
+                        number: j,
+                        type: 'Standard',
+                        status: 'Available'
+                    });
+                }
+            }
+
+            // Create seats in bulk
+            await SeatDAO.createMany(seats);
+        } catch (error) {
+            logger.error(`Error in generateSeatsForTheater service: ${error.message}`);
             throw error;
         }
     }
 }
 
-module.exports = new TheaterService(); 
+module.exports = TheaterService; 

@@ -10,6 +10,14 @@ class SeatDTO {
         this.createdAt = seat.createdAt;
         this.updatedAt = seat.updatedAt;
     }
+
+    static toDTO(seat) {
+        return new SeatDTO(seat);
+    }
+
+    static toDTOList(seats) {
+        return seats.map(seat => new SeatDTO(seat));
+    }
 }
 
 class CreateSeatDTO {

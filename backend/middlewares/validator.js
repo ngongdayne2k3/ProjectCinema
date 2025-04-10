@@ -1,10 +1,14 @@
-const { validationResult, body } = require('express-validator');
+const { validationResult, body, param } = require('express-validator');
 
 
 const validate = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({
+            success: false,
+            message: 'Validation error',
+            errors: errors.array()
+        });
     }
     next();
 };
@@ -43,26 +47,112 @@ const bookingValidationRules = [
     body('phone').matches(/^[0-9]{10}$/).withMessage('Số điện thoại không hợp lệ')
 ];
 
+const theaterValidationRules = [
+    body('name')
+        .notEmpty()
+        .withMessage('Tên rạp không được để trống')
+        .trim()
+        .isLength({ min: 2, max: 100 })
+        .withMessage('Tên rạp phải từ 2 đến 100 ký tự'),
+    
+    body('capacity')
+        .notEmpty()
+        .withMessage('Sức chứa không được để trống')
+        .isInt({ min: 1 })
+        .withMessage('Sức chứa phải là số nguyên dương'),
+    
+    body('format')
+        .notEmpty()
+        .withMessage('Định dạng không được để trống')
+        .isIn(['2D', '3D', 'IMAX'])
+        .withMessage('Định dạng không hợp lệ'),
+    
+    body('rows')
+        .notEmpty()
+        .withMessage('Số hàng không được để trống')
+        .isInt({ min: 1, max: 26 })
+        .withMessage('Số hàng phải từ 1 đến 26'),
+    
+    body('seatsPerRow')
+        .notEmpty()
+        .withMessage('Số ghế mỗi hàng không được để trống')
+        .isInt({ min: 1, max: 50 })
+        .withMessage('Số ghế mỗi hàng phải từ 1 đến 50'),
+    
+    body('isActive')
+        .optional()
+        .isBoolean()
+        .withMessage('Trạng thái hoạt động phải là true hoặc false'),
+    
+    body('description')
+        .optional()
+        .trim()
+        .isLength({ max: 500 })
+        .withMessage('Mô tả không được quá 500 ký tự')
+];
+
 const seatValidationRules = [
-    body('type').optional().isIn(['Standard', 'VIP']).withMessage('Loại ghế không hợp lệ'),
-    body('status').optional().isIn(['Available', 'Maintenance', 'Reserved']).withMessage('Trạng thái ghế không hợp lệ')
+    body('theater')
+        .notEmpty()
+        .withMessage('ID rạp không được để trống')
+        .isMongoId()
+        .withMessage('ID rạp không hợp lệ'),
+    
+    body('row')
+        .notEmpty()
+        .withMessage('Hàng không được để trống')
+        .matches(/^[A-Z]$/)
+        .withMessage('Hàng phải là một chữ cái in hoa từ A-Z'),
+    
+    body('number')
+        .notEmpty()
+        .withMessage('Số ghế không được để trống')
+        .isInt({ min: 1 })
+        .withMessage('Số ghế phải là số nguyên dương'),
+    
+    body('type')
+        .optional()
+        .isIn(['Standard', 'VIP'])
+        .withMessage('Loại ghế không hợp lệ'),
+    
+    body('status')
+        .optional()
+        .isIn(['Available', 'Maintenance', 'Reserved'])
+        .withMessage('Trạng thái ghế không hợp lệ')
 ];
 
 const bulkUpdateSeatValidationRules = [
-    body('seatIds').isArray().withMessage('Danh sách ID ghế phải là một mảng'),
-    body('seatIds.*').isMongoId().withMessage('ID ghế không hợp lệ'),
-    body('type').optional().isIn(['Standard', 'VIP']).withMessage('Loại ghế không hợp lệ'),
-    body('status').optional().isIn(['Available', 'Maintenance', 'Reserved']).withMessage('Trạng thái ghế không hợp lệ')
+    body('seatIds')
+        .isArray()
+        .withMessage('Danh sách ID ghế phải là một mảng')
+        .notEmpty()
+        .withMessage('Danh sách ID ghế không được để trống'),
+    
+    body('seatIds.*')
+        .isMongoId()
+        .withMessage('ID ghế không hợp lệ'),
+    
+    body('type')
+        .optional()
+        .isIn(['Standard', 'VIP'])
+        .withMessage('Loại ghế không hợp lệ'),
+    
+    body('status')
+        .optional()
+        .isIn(['Available', 'Maintenance', 'Reserved'])
+        .withMessage('Trạng thái ghế không hợp lệ')
 ];
 
-const theaterValidationRules = [
-    body('name').notEmpty().withMessage('Tên rạp không được để trống'),
-    body('location').notEmpty().withMessage('Địa chỉ rạp không được để trống'),
-    body('capacity').isInt({ min: 1 }).withMessage('Sức chứa phải là số nguyên dương'),
-    body('numberOfRooms').isInt({ min: 1 }).withMessage('Số phòng chiếu phải là số nguyên dương'),
-    body('contactInfo.phone').matches(/^[0-9]{10}$/).withMessage('Số điện thoại không hợp lệ'),
-    body('contactInfo.email').isEmail().withMessage('Email không hợp lệ'),
-    body('status').optional().isIn(['Active', 'Maintenance', 'Closed']).withMessage('Trạng thái rạp không hợp lệ')
+const idValidationRules = [
+    param('id')
+        .isMongoId()
+        .withMessage('ID không hợp lệ')
+];
+
+const theaterIdValidationRules = [
+    param('theaterId')
+        .isMongoId()
+        .withMessage('ID rạp không hợp lệ')
 ];
 
 module.exports = {
@@ -73,5 +163,7 @@ module.exports = {
     loginValidationRules,
     seatValidationRules,
     bulkUpdateSeatValidationRules,
-    theaterValidationRules
+    theaterValidationRules,
+    idValidationRules,
+    theaterIdValidationRules
 }; 

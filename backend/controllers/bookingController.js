@@ -1,4 +1,8 @@
+// controllers/bookingController.js
 const bookingService = require('../services/booking.service');
+const scheduleService = require('../services/schedule.service'); // Thêm để lấy thông tin lịch chiếu
+const movieService = require('../services/movie.service'); // Thêm để lấy thông tin phim
+const sendBookingSuccessEmail = require('../middlewares/sendEmail'); // Thêm để gửi email
 const logger = require('../config/logger');
 
 class BookingController {
@@ -8,15 +12,41 @@ class BookingController {
                 ...req.body,
                 user: req.user._id
             };
+            // Tạo booking
             const booking = await bookingService.createBooking(bookingData);
             logger.info(`Tạo đặt vé mới: ${booking.ticketCode}`);
-            res.status(201).json(booking);
+
+            // Lấy thông tin lịch chiếu và phim
+            const schedule = await scheduleService.getScheduleById(booking.schedule);
+            const movie = await movieService.getMovieById(schedule.movie);
+
+            // Tạo bookingDetails để gửi email
+            const bookingDetails = {
+                movie: movie.title,
+                showtime: schedule.startTime.toISOString(), // Hoặc định dạng thời gian theo ý bạn
+                seats: booking.seats.map(seat => `${seat.row}${seat.number}`), // Chuyển seats thành dạng "A1, A2"
+                totalPrice: booking.totalAmount,
+                ticketCode: booking.ticketCode, // Thêm ticketCode vào email
+            };
+
+            // Gửi email xác nhận (bất đồng bộ để không làm chậm response)
+            sendBookingSuccessEmail(booking.email, bookingDetails).catch(err => {
+                logger.error(`Lỗi gửi email xác nhận: ${err.message}`);
+            });
+
+            // Trả về response ngay lập tức
+            res.status(201).json({
+                success: true,
+                message: 'Booking created successfully! Confirmation email sent.',
+                data: booking,
+            });
         } catch (error) {
             logger.error(`Lỗi tạo đặt vé: ${error.message}`);
             res.status(400).json({ message: error.message });
         }
     }
 
+    // Các hàm khác (getBookingById, getUserBookings, v.v.) không cần chỉnh sửa
     async getBookingById(req, res) {
         try {
             const booking = await bookingService.getBookingById(req.params.id);
@@ -133,4 +163,4 @@ class BookingController {
     }
 }
 
-module.exports = new BookingController(); 
+module.exports = new BookingController();

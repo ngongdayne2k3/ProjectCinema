@@ -66,6 +66,8 @@ class BookingService {
         });
         return booking ? new BookingDTO(booking) : null;
     }
+
+    
 }
 
 module.exports = new BookingService(); 

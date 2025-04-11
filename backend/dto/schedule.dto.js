@@ -1,8 +1,18 @@
 class ScheduleDTO {
     constructor(schedule) {
         this._id = schedule._id;
-        this.movie = schedule.movie;
-        this.theater = schedule.theater;
+        this.movie = {
+            _id: schedule.movie._id,
+            title: schedule.movie.title,
+            duration: schedule.movie.duration,
+            format: schedule.movie.format
+        };
+        this.theater = {
+            _id: schedule.theater._id,
+            name: schedule.theater.name,
+            location: schedule.theater.location,
+            format: schedule.theater.format
+        };
         this.startTime = schedule.startTime;
         this.endTime = schedule.endTime;
         this.format = schedule.format;
@@ -34,6 +44,7 @@ class CreateScheduleDTO {
             { type: 'VIP', price: 0 }
         ];
         this.status = data.status || 'upcoming';
+        this.isDeleted = false;
     }
 }
 

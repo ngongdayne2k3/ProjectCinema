@@ -9,9 +9,6 @@ const { validate,
     scheduleIdValidationRules,
     movieIdValidationRules } = require('../middlewares/validator');
 const {
-    scheduleCustomValidationRules,
-    updateScheduleCustomValidationRules,
-    deleteScheduleValidationRules,
     cancelScheduleValidationRules
 } = require('../middlewares/customValidators/scheduleValidators');
 

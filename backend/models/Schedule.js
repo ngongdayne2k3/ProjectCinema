@@ -39,6 +39,10 @@ const scheduleSchema = new mongoose.Schema({
         type: String,
         enum: ['upcoming', 'showing', 'finished', 'canceled'],
         default: 'upcoming'
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true
@@ -48,5 +52,16 @@ const scheduleSchema = new mongoose.Schema({
 scheduleSchema.index({ movie: 1, startTime: 1 });
 scheduleSchema.index({ theater: 1, startTime: 1 });
 scheduleSchema.index({ status: 1 });
+
+// Middleware để populate movie và theater
+scheduleSchema.pre('find', function() {
+    this.populate('movie', 'title duration format');
+    this.populate('theater', 'name location format');
+});
+
+scheduleSchema.pre('findOne', function() {
+    this.populate('movie', 'title duration format');
+    this.populate('theater', 'name location format');
+});
 
 module.exports = mongoose.model('Schedule', scheduleSchema); 

@@ -17,7 +17,9 @@ class ScheduleDAO {
 
     static async findById(id) {
         try {
-            const schedule = await Schedule.findById(id);
+            const schedule = await Schedule.findById(id)
+                .populate('movie', 'title duration format')
+                .populate('theater', 'name location format');
             return schedule ? ScheduleDTO.toDTO(schedule) : null;
         } catch (error) {
             logger.error(`Lỗi tìm lịch chiếu theo ID trong DAO: ${error.message}`);
@@ -27,7 +29,9 @@ class ScheduleDAO {
 
     static async findAll() {
         try {
-            const schedules = await Schedule.find({ isDeleted: false });
+            const schedules = await Schedule.find({ isDeleted: false })
+                .populate('movie', 'title duration format')
+                .populate('theater', 'name location format');
             return ScheduleDTO.toDTOList(schedules);
         } catch (error) {
             logger.error(`Lỗi lấy danh sách lịch chiếu trong DAO: ${error.message}`);
@@ -42,7 +46,9 @@ class ScheduleDAO {
                 id,
                 { $set: updateScheduleDTO },
                 { new: true }
-            );
+            )
+            .populate('movie', 'title duration format')
+            .populate('theater', 'name location format');
             return schedule ? ScheduleDTO.toDTO(schedule) : null;
         } catch (error) {
             logger.error(`Lỗi cập nhật lịch chiếu trong DAO: ${error.message}`);
@@ -56,10 +62,12 @@ class ScheduleDAO {
                 id,
                 { $set: { isDeleted: true } },
                 { new: true }
-            );
+            )
+            .populate('movie', 'title duration format')
+            .populate('theater', 'name location format');
             return schedule ? ScheduleDTO.toDTO(schedule) : null;
         } catch (error) {
-            logger.error(`Lỗi xóa mềm lịch chiếu trong DAO: ${error.message}`);
+            logger.error(`Lỗi xóa lịch chiếu trong DAO: ${error.message}`);
             throw error;
         }
     }
@@ -69,10 +77,12 @@ class ScheduleDAO {
             const schedules = await Schedule.find({ 
                 movie: movieId,
                 isDeleted: false 
-            });
+            })
+            .populate('movie', 'title duration format')
+            .populate('theater', 'name location format');
             return ScheduleDTO.toDTOList(schedules);
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách lịch chiếu theo phim trong DAO: ${error.message}`);
+            logger.error(`Lỗi tìm lịch chiếu theo phim trong DAO: ${error.message}`);
             throw error;
         }
     }
@@ -82,10 +92,12 @@ class ScheduleDAO {
             const schedules = await Schedule.find({ 
                 theater: theaterId,
                 isDeleted: false 
-            });
+            })
+            .populate('movie', 'title duration format')
+            .populate('theater', 'name location format');
             return ScheduleDTO.toDTOList(schedules);
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách lịch chiếu theo rạp trong DAO: ${error.message}`);
+            logger.error(`Lỗi tìm lịch chiếu theo rạp trong DAO: ${error.message}`);
             throw error;
         }
     }
@@ -96,10 +108,12 @@ class ScheduleDAO {
                 startTime: { $gte: startDate },
                 endTime: { $lte: endDate },
                 isDeleted: false
-            });
+            })
+            .populate('movie', 'title duration format')
+            .populate('theater', 'name location format');
             return ScheduleDTO.toDTOList(schedules);
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách lịch chiếu theo khoảng thời gian trong DAO: ${error.message}`);
+            logger.error(`Lỗi tìm lịch chiếu theo khoảng thời gian trong DAO: ${error.message}`);
             throw error;
         }
     }
@@ -109,10 +123,12 @@ class ScheduleDAO {
             const schedules = await Schedule.find({ 
                 status: status,
                 isDeleted: false 
-            });
+            })
+            .populate('movie', 'title duration format')
+            .populate('theater', 'name location format');
             return ScheduleDTO.toDTOList(schedules);
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách lịch chiếu theo trạng thái trong DAO: ${error.message}`);
+            logger.error(`Lỗi tìm lịch chiếu theo trạng thái trong DAO: ${error.message}`);
             throw error;
         }
     }

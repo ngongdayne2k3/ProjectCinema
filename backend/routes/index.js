@@ -6,6 +6,7 @@ const bookingRoutes = require('./bookingRoutes');
 const theaterRoutes = require('./theaterRoutes');
 const seatRoutes = require('./seatRoutes');
 const scheduleRoutes = require('./scheduleRoutes');
+const paymentRoutes = require('./paymentRoutes');
 
 
 // Routes
@@ -15,6 +16,7 @@ router.use(`/bookings`, bookingRoutes);
 router.use('/theaters', theaterRoutes);
 router.use('/seats', seatRoutes);
 router.use(`/schedules`, scheduleRoutes);
+router.use('/payment', paymentRoutes);
 
 // Health check route
 router.get('/health', (req, res) => {

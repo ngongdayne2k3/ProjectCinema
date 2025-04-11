@@ -6,4 +6,4 @@
 5. tích hợp thêm nodemailer vào phần gửi mail sau khi booking thành công.
 6. thêm tính năng quên, reset mật khẩu ở user (nodemailer)
 7. rating movie bằng user.
-8. cập nhật thêm cái ngày khởi chiếu.
+8. cập nhật thêm cái ngày khởi chiếu. (có thể phát triển sau)

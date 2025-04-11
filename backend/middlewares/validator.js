@@ -1,4 +1,7 @@
-const { validationResult, body, param } = require('express-validator');
+const { validationResult, body, param, query } = require('express-validator');
+const Booking = require('../models/Booking');
+const Schedule = require('../models/Schedule');
+const Seat = require('../models/Seat');
 
 
 const validate = (req, res, next) => {
@@ -37,14 +40,91 @@ const loginValidationRules = [
 ];
 
 const bookingValidationRules = [
-    body('schedule').notEmpty().withMessage('Lịch chiếu không được để trống'),
-    body('seats').isArray().withMessage('Ghế ngồi phải là một mảng'),
-    body('seats.*.row').notEmpty().withMessage('Hàng ghế không được để trống'),
-    body('seats.*.number').isInt({ min: 1 }).withMessage('Số ghế phải là số nguyên dương'),
-    body('totalAmount').isFloat({ min: 0 }).withMessage('Tổng tiền phải là số dương'),
-    body('paymentMethod').isIn(['Momo', 'Banking', 'E-Wallet']).withMessage('Phương thức thanh toán không hợp lệ'),
-    body('email').isEmail().withMessage('Email không hợp lệ'),
-    body('phone').matches(/^[0-9]{10}$/).withMessage('Số điện thoại không hợp lệ')
+    body('user')
+        .isMongoId()
+        .withMessage('ID người dùng không hợp lệ'),
+    body('schedule')
+        .isMongoId()
+        .withMessage('ID lịch chiếu không hợp lệ'),
+    body('seats')
+        .isArray()
+        .withMessage('Danh sách ghế phải là một mảng')
+        .notEmpty()
+        .withMessage('Danh sách ghế không được để trống'),
+    body('seats.*')
+        .isMongoId()
+        .withMessage('ID ghế không hợp lệ'),
+    body('totalAmount')
+        .isFloat({ min: 0 })
+        .withMessage('Tổng tiền phải là số dương'),
+    body('paymentMethod')
+        .isIn(['VNPay'])
+        .withMessage('Phương thức thanh toán không hợp lệ')
+];
+
+const updateBookingValidationRules = [
+    body('status')
+        .optional()
+        .isIn(['Chưa thanh toán', 'Đã thanh toán', 'Đã hủy'])
+        .withMessage('Trạng thái không hợp lệ'),
+    body('paymentMethod')
+        .optional()
+        .isIn(['VNPay'])
+        .withMessage('Phương thức thanh toán không hợp lệ')
+];
+
+const bookingIdValidationRules = [
+    param('id')
+        .isMongoId()
+        .withMessage('ID booking không hợp lệ')
+];
+
+const checkBookingExists = async (bookingId) => {
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+        throw new Error('Booking không tồn tại');
+    }
+    return true;
+};
+
+const checkCanUpdateBooking = async (bookingId) => {
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+        throw new Error('Booking không tồn tại');
+    }
+    if (booking.status === 'Đã thanh toán') {
+        throw new Error('Không thể cập nhật booking đã thanh toán');
+    }
+    return true;
+};
+
+const checkCanCancelBooking = async (bookingId) => {
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+        throw new Error('Booking không tồn tại');
+    }
+    if (booking.status === 'Đã thanh toán') {
+        throw new Error('Không thể hủy booking đã thanh toán');
+    }
+    if (booking.status === 'Đã hủy') {
+        throw new Error('Booking đã bị hủy');
+    }
+    return true;
+};
+
+const bookingCustomValidationRules = [
+    param('id')
+        .custom(checkBookingExists)
+];
+
+const updateBookingCustomValidationRules = [
+    param('id')
+        .custom(checkCanUpdateBooking)
+];
+
+const cancelBookingCustomValidationRules = [
+    param('id')
+        .custom(checkCanCancelBooking)
 ];
 
 const theaterValidationRules = [
@@ -229,6 +309,62 @@ const movieIdValidationRules = [
         .withMessage('ID phim không hợp lệ')
 ];
 
+// Validation rules cho tạo booking
+const validateBooking = [
+    body('schedule')
+        .isMongoId()
+        .withMessage('ID lịch chiếu không hợp lệ')
+        .custom(async (scheduleId) => {
+            const schedule = await Schedule.findById(scheduleId)
+                .populate('theater');
+            if (!schedule) {
+                throw new Error('Lịch chiếu không tồn tại');
+            }
+            return true;
+        }),
+    body('seats')
+        .isArray()
+        .withMessage('Danh sách ghế phải là một mảng')
+        .notEmpty()
+        .withMessage('Danh sách ghế không được để trống')
+        .custom(async (seatIds, { req }) => {
+            const schedule = await Schedule.findById(req.body.schedule)
+                .populate('theater');
+            if (!schedule) {
+                throw new Error('Lịch chiếu không tồn tại');
+            }
+
+            const seats = await Seat.find({ _id: { $in: seatIds } });
+            if (seats.length !== seatIds.length) {
+                throw new Error('Một số ghế không tồn tại');
+            }
+
+            // Kiểm tra xem tất cả ghế có thuộc rạp của lịch chiếu không
+            for (const seat of seats) {
+                if (seat.theater.toString() !== schedule.theater._id.toString()) {
+                    throw new Error(`Ghế ${seat._id} không thuộc rạp của lịch chiếu`);
+                }
+                if (seat.status !== 'Available') {
+                    throw new Error(`Ghế ${seat._id} không khả dụng`);
+                }
+            }
+
+            return true;
+        }),
+    body('paymentMethod')
+        .isIn(['Momo', 'Banking', 'E-Wallet', 'VNPAY'])
+        .withMessage('Phương thức thanh toán không hợp lệ'),
+    validate
+];
+
+// Validation rules cho cập nhật trạng thái thanh toán
+const validatePaymentStatus = [
+    body('paymentStatus')
+        .isIn(['Chưa thanh toán', 'Đã thanh toán', 'Đã hủy'])
+        .withMessage('Trạng thái thanh toán không hợp lệ'),
+    validate
+];
+
 module.exports = {
     validate,
     movieValidationRules,
@@ -243,5 +379,12 @@ module.exports = {
     scheduleValidationRules,
     updateScheduleValidationRules,
     scheduleIdValidationRules,
-    movieIdValidationRules
+    movieIdValidationRules,
+    bookingIdValidationRules,
+    updateBookingValidationRules,
+    bookingCustomValidationRules,
+    updateBookingCustomValidationRules,
+    cancelBookingCustomValidationRules,
+    validateBooking,
+    validatePaymentStatus
 }; 

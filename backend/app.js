@@ -9,6 +9,7 @@ const connectDB = require('./config/database');
 const errorHandler = require('./middlewares/errorHandler');
 const routes = require('./routes');
 const logger = require('./config/logger');
+const ScheduleStatusJob = require('./jobs/scheduleStatus.job');
 
 // Khởi tạo ứng dụng Express
 const app = express();
@@ -32,6 +33,9 @@ app.use('/uploads', express.static(path.join(__dirname, process.env.UPLOAD_PATH 
 
 // Routes
 app.use('/', routes);
+
+// Khởi động job cập nhật trạng thái lịch chiếu
+ScheduleStatusJob.start();
 
 // Xử lý lỗi 404
 app.use((req, res) => {

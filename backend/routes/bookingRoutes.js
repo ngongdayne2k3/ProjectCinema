@@ -1,29 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const bookingController = require('../controllers/bookingController');
+const BookingController = require('../controllers/bookingController');
 const { auth, adminAuth } = require('../middlewares/auth');
-const { validate, bookingValidationRules } = require('../middlewares/validator');
+const { validateBooking, validatePaymentStatus } = require('../middlewares/validator');
 const { apiLimiter } = require('../config/rateLimit');
 
-// Protected routes
-router.post('/', 
-    auth,
-    apiLimiter,
-    bookingValidationRules,
-    validate,
-    bookingController.createBooking
-);
+// Public routes
+router.get('/', apiLimiter, BookingController.getAllBookings);
+router.get('/:id', apiLimiter, BookingController.getBookingById);
+router.get('/user/:userId', apiLimiter, BookingController.getBookingsByUser);
+router.get('/schedule/:scheduleId', apiLimiter, BookingController.getBookingsBySchedule);
+router.get('/status/:status', apiLimiter, BookingController.getBookingsByStatus);
+router.get('/date-range', apiLimiter, BookingController.getBookingsByDateRange);
 
-router.get('/my-bookings', auth, bookingController.getUserBookings);
-router.get('/ticket/:ticketCode', auth, bookingController.getBookingByTicketCode);
-router.put('/:id/cancel', auth, bookingController.cancelBooking);
+// Protected routes (require authentication)
+router.post('/', apiLimiter, auth, validateBooking, BookingController.createBooking);
+router.put('/:id', apiLimiter, auth, validateBooking, BookingController.updateBooking);
+router.put('/:id/payment-status', apiLimiter, auth, validatePaymentStatus, BookingController.updatePaymentStatus);
 
 // Admin routes
-router.get('/', adminAuth, bookingController.getAllBookings);
-router.get('/:id', adminAuth, bookingController.getBookingById);
-router.put('/:id', adminAuth, bookingValidationRules, validate, bookingController.updateBooking);
-router.put('/:id/payment-status', adminAuth, bookingController.updatePaymentStatus);
-router.put('/:id/booking-status', adminAuth, bookingController.updateBookingStatus);
-router.get('/schedule/:scheduleId', adminAuth, bookingController.getBookingsBySchedule);
+router.delete('/:id', apiLimiter, auth, adminAuth, BookingController.deleteBooking);
 
 module.exports = router; 

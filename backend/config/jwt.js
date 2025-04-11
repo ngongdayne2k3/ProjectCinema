@@ -1,16 +1,24 @@
 const jwt = require('jsonwebtoken');
+const logger = require('./logger');
 
-const generateToken = (payload) => {
-    return jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN || '24h'
-    });
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1d';
+
+const generateToken = (payload, expiresIn = JWT_EXPIRES_IN) => {
+    try {
+        return jwt.sign(payload, JWT_SECRET, { expiresIn });
+    } catch (error) {
+        logger.error('Lỗi khi tạo token:', error);
+        throw error;
+    }
 };
 
 const verifyToken = (token) => {
     try {
-        return jwt.verify(token, process.env.JWT_SECRET);
+        return jwt.verify(token, JWT_SECRET);
     } catch (error) {
-        throw new Error('Token không hợp lệ hoặc đã hết hạn');
+        logger.error('Lỗi khi xác thực token:', error);
+        throw error;
     }
 };
 

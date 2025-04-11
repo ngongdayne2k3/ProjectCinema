@@ -1,136 +1,194 @@
-const bookingService = require('../services/booking.service');
+const BookingService = require('../services/booking.service');
+const VNPayService = require('../services/vnpay.service');
 const logger = require('../config/logger');
 
 class BookingController {
-    async createBooking(req, res) {
+    static async createBooking(req, res) {
         try {
+            // Lấy thông tin từ request
             const bookingData = {
-                ...req.body,
-                user: req.user._id
+                user: req.user._id, // Lấy từ middleware authenticate
+                schedule: req.body.schedule,
+                seats: req.body.seats,
+                paymentMethod: req.body.paymentMethod
             };
-            const booking = await bookingService.createBooking(bookingData);
-            logger.info(`Tạo đặt vé mới: ${booking.ticketCode}`);
-            res.status(201).json(booking);
-        } catch (error) {
-            logger.error(`Lỗi tạo đặt vé: ${error.message}`);
-            res.status(400).json({ message: error.message });
-        }
-    }
 
-    async getBookingById(req, res) {
-        try {
-            const booking = await bookingService.getBookingById(req.params.id);
-            if (!booking) {
-                return res.status(404).json({ message: 'Không tìm thấy đặt vé' });
+            // Tạo booking
+            const booking = await BookingService.createBooking(bookingData);
+
+            // Nếu phương thức thanh toán là VNPay, tạo URL thanh toán
+            let paymentUrl = null;
+            if (booking.paymentMethod === 'VNPAY') {
+                paymentUrl = VNPayService.createPaymentUrl(booking.id, booking.totalAmount);
             }
-            res.json(booking);
+
+            // Trả về response
+            res.status(201).json({
+                success: true,
+                message: 'Đặt vé thành công',
+                data: {
+                    bookingId: booking._id,
+                    totalAmount: booking.totalAmount,
+                    paymentStatus: booking.paymentStatus,
+                    seats: booking.seats,
+                    schedule: booking.schedule,
+                    paymentUrl: paymentUrl
+                }
+            });
         } catch (error) {
-            logger.error(`Lỗi lấy thông tin đặt vé: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error('Lỗi khi tạo booking:', error);
+            res.status(400).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 
-    async getUserBookings(req, res) {
+    static async getBookingById(req, res) {
         try {
-            const bookings = await bookingService.getUserBookings(req.user._id);
-            res.json(bookings);
+            const booking = await BookingService.getBookingById(req.params.id);
+            res.status(200).json({
+                success: true,
+                data: booking
+            });
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách đặt vé: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error('Lỗi khi lấy thông tin booking:', error);
+            res.status(404).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 
-    async updateBooking(req, res) {
+    static async getAllBookings(req, res) {
         try {
-            const booking = await bookingService.updateBooking(req.params.id, req.body);
-            if (!booking) {
-                return res.status(404).json({ message: 'Không tìm thấy đặt vé' });
-            }
-            logger.info(`Cập nhật đặt vé: ${booking.ticketCode}`);
-            res.json(booking);
+            const bookings = await BookingService.getAllBookings();
+            res.status(200).json({
+                success: true,
+                data: bookings
+            });
         } catch (error) {
-            logger.error(`Lỗi cập nhật đặt vé: ${error.message}`);
-            res.status(400).json({ message: error.message });
+            logger.error('Lỗi khi lấy danh sách booking:', error);
+            res.status(500).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 
-    async updatePaymentStatus(req, res) {
+    static async updateBooking(req, res) {
         try {
-            const { status } = req.body;
-            const booking = await bookingService.updatePaymentStatus(req.params.id, status);
-            if (!booking) {
-                return res.status(404).json({ message: 'Không tìm thấy đặt vé' });
-            }
-            logger.info(`Cập nhật trạng thái thanh toán: ${booking.ticketCode}`);
-            res.json(booking);
+            const booking = await BookingService.updateBooking(req.params.id, req.body);
+            res.status(200).json({
+                success: true,
+                data: booking
+            });
         } catch (error) {
-            logger.error(`Lỗi cập nhật trạng thái thanh toán: ${error.message}`);
-            res.status(400).json({ message: error.message });
+            logger.error('Lỗi khi cập nhật booking:', error);
+            res.status(400).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 
-    async updateBookingStatus(req, res) {
+    static async deleteBooking(req, res) {
         try {
-            const { status } = req.body;
-            const booking = await bookingService.updateBookingStatus(req.params.id, status);
-            if (!booking) {
-                return res.status(404).json({ message: 'Không tìm thấy đặt vé' });
-            }
-            logger.info(`Cập nhật trạng thái đặt vé: ${booking.ticketCode}`);
-            res.json(booking);
+            const booking = await BookingService.deleteBooking(req.params.id);
+            res.status(200).json({
+                success: true,
+                data: booking
+            });
         } catch (error) {
-            logger.error(`Lỗi cập nhật trạng thái đặt vé: ${error.message}`);
-            res.status(400).json({ message: error.message });
+            logger.error('Lỗi khi xóa booking:', error);
+            res.status(404).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 
-    async getBookingByTicketCode(req, res) {
+    static async getBookingsByUser(req, res) {
         try {
-            const booking = await bookingService.getBookingByTicketCode(req.params.ticketCode);
-            if (!booking) {
-                return res.status(404).json({ message: 'Không tìm thấy đặt vé' });
-            }
-            res.json(booking);
+            const bookings = await BookingService.getBookingsByUser(req.params.userId);
+            res.status(200).json({
+                success: true,
+                data: bookings
+            });
         } catch (error) {
-            logger.error(`Lỗi lấy thông tin đặt vé theo mã vé: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error('Lỗi khi lấy danh sách booking theo user:', error);
+            res.status(500).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 
-    async getBookingsBySchedule(req, res) {
+    static async getBookingsBySchedule(req, res) {
         try {
-            const bookings = await bookingService.getBookingsBySchedule(req.params.scheduleId);
-            res.json(bookings);
+            const bookings = await BookingService.getBookingsBySchedule(req.params.scheduleId);
+            res.status(200).json({
+                success: true,
+                data: bookings
+            });
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách đặt vé theo lịch chiếu: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error('Lỗi khi lấy danh sách booking theo lịch chiếu:', error);
+            res.status(500).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 
-    async cancelBooking(req, res) {
+    static async getBookingsByStatus(req, res) {
         try {
-            const { reason } = req.body;
-            const booking = await bookingService.cancelBooking(req.params.id, reason);
-            if (!booking) {
-                return res.status(404).json({ message: 'Không tìm thấy đặt vé' });
-            }
-            logger.info(`Hủy đặt vé: ${booking.ticketCode}`);
-            res.json(booking);
+            const bookings = await BookingService.getBookingsByStatus(req.params.status);
+            res.status(200).json({
+                success: true,
+                data: bookings
+            });
         } catch (error) {
-            logger.error(`Lỗi hủy đặt vé: ${error.message}`);
-            res.status(400).json({ message: error.message });
+            logger.error('Lỗi khi lấy danh sách booking theo trạng thái:', error);
+            res.status(500).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 
-    async getAllBookings(req, res) {
+    static async getBookingsByDateRange(req, res) {
         try {
-            const bookings = await bookingService.getAllBookings(req.query);
-            res.json(bookings);
+            const { startDate, endDate } = req.query;
+            const bookings = await BookingService.getBookingsByDateRange(startDate, endDate);
+            res.status(200).json({
+                success: true,
+                data: bookings
+            });
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách tất cả đặt vé: ${error.message}`);
-            res.status(500).json({ message: error.message });
+            logger.error('Lỗi khi lấy danh sách booking theo khoảng thời gian:', error);
+            res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    }
+
+    static async updatePaymentStatus(req, res) {
+        try {
+            const { paymentStatus } = req.body;
+            const booking = await BookingService.updatePaymentStatus(req.params.id, paymentStatus);
+            res.status(200).json({
+                success: true,
+                data: booking
+            });
+        } catch (error) {
+            logger.error('Lỗi khi cập nhật trạng thái thanh toán:', error);
+            res.status(400).json({
+                success: false,
+                message: error.message
+            });
         }
     }
 }
 
-module.exports = new BookingController(); 
+module.exports = BookingController; 

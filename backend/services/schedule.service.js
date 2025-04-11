@@ -1,79 +1,88 @@
-const Schedule = require('../models/Schedule');
+const ScheduleDAO = require('../dao/schedule.dao');
+const { CreateScheduleDTO, UpdateScheduleDTO } = require('../dto/schedule.dto');
 const logger = require('../config/logger');
 
 class ScheduleService {
-    async createSchedule(scheduleData) {
+    static async createSchedule(scheduleData) {
         try {
-            const schedule = new Schedule(scheduleData);
-            await schedule.save();
-            return schedule;
+            return await ScheduleDAO.create(scheduleData);
         } catch (error) {
-            logger.error(`Lỗi tạo lịch chiếu: ${error.message}`);
+            logger.error(`Error in createSchedule service: ${error.message}`);
             throw error;
         }
     }
 
-    async getScheduleById(id) {
+    static async getScheduleById(id) {
         try {
-            return await Schedule.findById(id)
-                .populate('movie')
-                .populate('theater');
+            return await ScheduleDAO.findById(id);
         } catch (error) {
-            logger.error(`Lỗi lấy thông tin lịch chiếu: ${error.message}`);
+            logger.error(`Error in getScheduleById service: ${error.message}`);
             throw error;
         }
     }
 
-    async getAllSchedules(query = {}) {
+    static async getAllSchedules() {
         try {
-            return await Schedule.find(query)
-                .populate('movie')
-                .populate('theater');
+            return await ScheduleDAO.findAll();
         } catch (error) {
-            logger.error(`Lỗi lấy danh sách lịch chiếu: ${error.message}`);
+            logger.error(`Error in getAllSchedules service: ${error.message}`);
             throw error;
         }
     }
 
-    async updateSchedule(id, scheduleData) {
+    static async updateSchedule(id, scheduleData) {
         try {
-            return await Schedule.findByIdAndUpdate(id, scheduleData, { new: true })
-                .populate('movie')
-                .populate('theater');
+            return await ScheduleDAO.update(id, scheduleData);
         } catch (error) {
-            logger.error(`Lỗi cập nhật lịch chiếu: ${error.message}`);
+            logger.error(`Error in updateSchedule service: ${error.message}`);
             throw error;
         }
     }
 
-    async deleteSchedule(id) {
+    static async deleteSchedule(id) {
         try {
-            return await Schedule.findByIdAndDelete(id);
+            return await ScheduleDAO.delete(id);
         } catch (error) {
-            logger.error(`Lỗi xóa lịch chiếu: ${error.message}`);
+            logger.error(`Error in deleteSchedule service: ${error.message}`);
             throw error;
         }
     }
 
-    async getSchedulesByMovie(movieId) {
+    static async getSchedulesByMovie(movieId) {
         try {
-            return await Schedule.find({ movie: movieId })
-                .populate('theater');
+            return await ScheduleDAO.findByMovie(movieId);
         } catch (error) {
-            logger.error(`Lỗi lấy lịch chiếu theo phim: ${error.message}`);
+            logger.error(`Error in getSchedulesByMovie service: ${error.message}`);
             throw error;
         }
     }
 
-    async getSchedulesByTheater(theaterId) {
+    static async getSchedulesByTheater(theaterId) {
         try {
-            return await Schedule.find({ theater: theaterId })
-                .populate('movie');
+            return await ScheduleDAO.findByTheater(theaterId);
         } catch (error) {
-            logger.error(`Lỗi lấy lịch chiếu theo rạp: ${error.message}`);
+            logger.error(`Error in getSchedulesByTheater service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async getSchedulesByDateRange(startDate, endDate) {
+        try {
+            return await ScheduleDAO.findByDateRange(startDate, endDate);
+        } catch (error) {
+            logger.error(`Error in getSchedulesByDateRange service: ${error.message}`);
+            throw error;
+        }
+    }
+
+    static async getSchedulesByStatus(status) {
+        try {
+            return await ScheduleDAO.findByStatus(status);
+        } catch (error) {
+            logger.error(`Error in getSchedulesByStatus service: ${error.message}`);
             throw error;
         }
     }
 }
 
-module.exports = new ScheduleService(); 
+module.exports = ScheduleService; 

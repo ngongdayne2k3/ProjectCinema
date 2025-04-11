@@ -1,36 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const scheduleController = require('../controllers/scheduleController');
-const { auth, adminAuth } = require('../middlewares/auth');
-const { validate, scheduleValidationRules } = require('../middlewares/validator');
-const { apiLimiter } = require('../config/rateLimit');
+const ScheduleController = require('../controllers/scheduleController');
+const { adminAuth } = require('../middlewares/auth');
+const { validate,
+    theaterIdValidationRules,
+    scheduleValidationRules,
+    updateScheduleValidationRules,
+    scheduleIdValidationRules,
+    movieIdValidationRules } = require('../middlewares/validator');
+const {
+    cancelScheduleValidationRules
+} = require('../middlewares/customValidators/scheduleValidators');
 
 // Public routes
-router.get('/', scheduleController.getAllSchedules);
-router.get('/movie/:movieId', scheduleController.getSchedulesByMovie);
-router.get('/:id', scheduleController.getScheduleById);
+router.get('/', ScheduleController.getAllSchedules);
+router.get('/:id', scheduleIdValidationRules, validate, ScheduleController.getScheduleById);
+router.get('/movie/:movieId', movieIdValidationRules, validate, ScheduleController.getSchedulesByMovie);
+router.get('/theater/:theaterId', theaterIdValidationRules, validate, ScheduleController.getSchedulesByTheater);
+router.get('/date-range', ScheduleController.getSchedulesByDateRange);
+router.get('/status/:status', ScheduleController.getSchedulesByStatus);
 
 // Protected routes
-router.get('/available-seats/:id', auth, scheduleController.getAvailableSeats);
+// router.get('/available-seats/:id', auth, scheduleController.getAvailableSeats);
 
 // Admin routes
-router.post('/', 
-    adminAuth,
-    apiLimiter,
-    scheduleValidationRules,
-    validate,
-    scheduleController.createSchedule
-);
+router.post('/', adminAuth, scheduleValidationRules, validate, ScheduleController.createSchedule);
+router.put('/:id', adminAuth, scheduleIdValidationRules, updateScheduleValidationRules, validate, ScheduleController.updateSchedule);
+router.delete('/:id', adminAuth, scheduleIdValidationRules, validate, ScheduleController.deleteSchedule);
+router.post('/:id/cancel', adminAuth, cancelScheduleValidationRules, validate, ScheduleController.cancelSchedule);
 
-router.put('/:id',
-    adminAuth,
-    scheduleValidationRules,
-    validate,
-    scheduleController.updateSchedule
-);
-
-router.delete('/:id', adminAuth, scheduleController.deleteSchedule);
-
-router.put('/:id/status', adminAuth, scheduleController.updateScheduleStatus);
+// router.put('/:id/status', adminAuth, scheduleController.updateScheduleStatus);
 
 module.exports = router; 

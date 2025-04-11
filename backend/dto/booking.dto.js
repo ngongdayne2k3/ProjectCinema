@@ -1,20 +1,25 @@
 class BookingDTO {
-    constructor(booking) {
-        this.id = booking._id;
-        this.user = booking.user;
-        this.schedule = booking.schedule;
-        this.seats = booking.seats;
-        this.totalAmount = booking.totalAmount;
-        this.paymentMethod = booking.paymentMethod;
-        this.paymentStatus = booking.paymentStatus;
-        this.bookingStatus = booking.bookingStatus;
-        this.ticketCode = booking.ticketCode;
-        this.email = booking.email;
-        this.phone = booking.phone;
-        this.specialRequests = booking.specialRequests;
-        this.refundReason = booking.refundReason;
-        this.createdAt = booking.createdAt;
-        this.updatedAt = booking.updatedAt;
+    static toDTO(booking) {
+        return {
+            id: booking._id,
+            user: booking.user,
+            schedule: booking.schedule,
+            seats: booking.seats,
+            totalAmount: booking.totalAmount,
+            paymentMethod: booking.paymentMethod,
+            paymentStatus: booking.paymentStatus,
+            bookingStatus: booking.bookingStatus,
+            ticketCode: booking.ticketCode,
+            specialRequests: booking.specialRequests,
+            refundReason: booking.refundReason,
+            expiresAt: booking.expiresAt,
+            createdAt: booking.createdAt,
+            updatedAt: booking.updatedAt
+        };
+    }
+
+    static toListDTO(bookings) {
+        return bookings.map(booking => this.toDTO(booking));
     }
 }
 
@@ -25,21 +30,18 @@ class CreateBookingDTO {
         this.seats = data.seats;
         this.totalAmount = data.totalAmount;
         this.paymentMethod = data.paymentMethod;
-        this.email = data.email;
-        this.phone = data.phone;
+        this.paymentStatus = 'Pending';
+        this.bookingStatus = 'Active';
+        this.ticketCode = data.ticketCode;
         this.specialRequests = data.specialRequests;
     }
 }
 
 class UpdateBookingDTO {
     constructor(data) {
-        if (data.seats) this.seats = data.seats;
-        if (data.totalAmount) this.totalAmount = data.totalAmount;
-        if (data.paymentMethod) this.paymentMethod = data.paymentMethod;
         if (data.paymentStatus) this.paymentStatus = data.paymentStatus;
         if (data.bookingStatus) this.bookingStatus = data.bookingStatus;
-        if (data.email) this.email = data.email;
-        if (data.phone) this.phone = data.phone;
+        if (data.paymentMethod) this.paymentMethod = data.paymentMethod;
         if (data.specialRequests) this.specialRequests = data.specialRequests;
         if (data.refundReason) this.refundReason = data.refundReason;
     }

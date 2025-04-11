@@ -17,14 +17,17 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: 6
     },
     fullName: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     phone: {
-        type: String
+        type: String,
+        trim: true
     },
     role: {
         type: String,
@@ -44,6 +47,12 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Booking'
     }],
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpires: {
+        type: Date
+    },
     isActive: {
         type: Boolean,
         default: true
@@ -55,13 +64,19 @@ const userSchema = new mongoose.Schema({
 // Hash password trước khi lưu
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
+    
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error) {
+        next(error);
+    }
 });
 
 // Method kiểm tra password
 userSchema.methods.comparePassword = async function(candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
+    return bcrypt.compare(candidatePassword, this.password);
 };
 
 module.exports = mongoose.model('User', userSchema); 

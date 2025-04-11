@@ -6,12 +6,20 @@ class UserDAO {
         return await user.save();
     }
 
+    async findAll() {
+        return await User.find({}).select('-password');
+    }
+
     async findById(id) {
-        return await User.findById(id);
+        return await User.findById(id).select('-password');
     }
 
     async findByEmail(email) {
-        return await User.findOne({ email });
+        try {
+            return await User.findOne({ email: email.toLowerCase() });
+        } catch (error) {
+            throw error;
+        }
     }
 
     async findByUsername(username) {
@@ -19,7 +27,7 @@ class UserDAO {
     }
 
     async update(id, userData) {
-        return await User.findByIdAndUpdate(id, userData, { new: true });
+        return await User.findByIdAndUpdate(id, userData, { new: true }).select('-password');
     }
 
     async delete(id) {
@@ -27,11 +35,21 @@ class UserDAO {
     }
 
     async updateMembershipPoints(id, points) {
-        return await User.findByIdAndUpdate(
+        const user = await User.findByIdAndUpdate(
             id,
             { $inc: { membershipPoints: points } },
             { new: true }
-        );
+        ).select('-password');
+
+        if (user) {
+            // Tính toán lại cấp độ thành viên
+            const newLevel = this.calculateMembershipLevel(user.membershipPoints);
+            if (newLevel !== user.membershipLevel) {
+                await this.updateMembershipLevel(id, newLevel);
+            }
+        }
+
+        return user;
     }
 
     async updateMembershipLevel(id, level) {
@@ -39,7 +57,14 @@ class UserDAO {
             id,
             { membershipLevel: level },
             { new: true }
-        );
+        ).select('-password');
+    }
+
+    calculateMembershipLevel(points) {
+        if (points >= 1000) return 'Platinum';
+        if (points >= 500) return 'Gold';
+        if (points >= 200) return 'Silver';
+        return 'Bronze';
     }
 
     async addBookingToHistory(id, bookingId) {
@@ -47,7 +72,18 @@ class UserDAO {
             id,
             { $push: { bookingHistory: bookingId } },
             { new: true }
-        );
+        ).select('-password');
+    }
+
+    async findByResetToken(token) {
+        try {
+            return await User.findOne({
+                resetPasswordToken: token,
+                resetPasswordExpires: { $gt: new Date() }
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 }
 

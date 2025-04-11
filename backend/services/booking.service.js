@@ -72,8 +72,8 @@ class BookingService {
 
             // 8. Tạo booking
             const createBookingDTO = {
-                user: user._id,
-                schedule: schedule._id,
+                user: user.id,
+                schedule: schedule.id,
                 seats: seatDetails,
                 totalAmount,
                 paymentMethod: data.paymentMethod,
@@ -84,7 +84,7 @@ class BookingService {
             };
 
             const booking = await bookingDAO.create(createBookingDTO);
-            logger.info(`Tạo booking mới: ${booking._id} cho user ${user.username}`);
+            logger.info(`Tạo booking mới: ${booking.id} cho ${user.username}`);
             
             // 9. Cập nhật trạng thái ghế
             await Seat.updateMany(

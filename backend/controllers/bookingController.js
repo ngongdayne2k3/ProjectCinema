@@ -1,4 +1,5 @@
 const BookingService = require('../services/booking.service');
+const VNPayService = require('../services/vnpay.service');
 const logger = require('../config/logger');
 
 class BookingController {
@@ -15,6 +16,12 @@ class BookingController {
             // Tạo booking
             const booking = await BookingService.createBooking(bookingData);
 
+            // Nếu phương thức thanh toán là VNPay, tạo URL thanh toán
+            let paymentUrl = null;
+            if (booking.paymentMethod === 'VNPAY') {
+                paymentUrl = VNPayService.createPaymentUrl(booking.id, booking.totalAmount);
+            }
+
             // Trả về response
             res.status(201).json({
                 success: true,
@@ -24,7 +31,8 @@ class BookingController {
                     totalAmount: booking.totalAmount,
                     paymentStatus: booking.paymentStatus,
                     seats: booking.seats,
-                    schedule: booking.schedule
+                    schedule: booking.schedule,
+                    paymentUrl: paymentUrl
                 }
             });
         } catch (error) {

@@ -1,4 +1,7 @@
 const userService = require('../services/user.service');
+const emailService = require('../services/email.service');
+const { generateToken } = require('../config/jwt');
+const { comparePassword, hashPassword } = require('../config/password');
 const logger = require('../config/logger');
 
 class UserController {
@@ -106,6 +109,135 @@ class UserController {
         } catch (error) {
             logger.error(`Lỗi xóa người dùng: ${error.message}`);
             res.status(500).json({ message: error.message });
+        }
+    }
+    
+    async forgotPassword(req, res) {
+        try {
+            const { email } = req.body;
+
+            // Kiểm tra email có tồn tại không
+            const user = await userService.getUserByEmail(email);
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Email không tồn tại trong hệ thống'
+                });
+            }
+
+            // Tạo token reset mật khẩu
+            const resetToken = generateToken({ id: user._id }, '10m');
+
+            // Lưu token vào database
+            await userService.updateUser(user._id, {
+                resetPasswordToken: resetToken,
+                resetPasswordExpires: new Date(Date.now() + 10 * 60 * 1000) // 10 phút
+            });
+
+            // Gửi email reset mật khẩu
+            await emailService.sendResetPasswordEmail(user.email, resetToken);
+
+            res.status(200).json({
+                success: true,
+                message: 'Email đặt lại mật khẩu đã được gửi'
+            });
+        } catch (error) {
+            logger.error('Lỗi khi xử lý yêu cầu quên mật khẩu:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi hệ thống'
+            });
+        }
+    }
+
+    async resetPassword(req, res) {
+        try {
+            const { token, newPassword } = req.body;
+
+            // Tìm user với token hợp lệ
+            const user = await userService.getUserByResetToken(token);
+            if (!user) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Token không hợp lệ hoặc đã hết hạn'
+                });
+            }
+
+            // Kiểm tra token hết hạn
+            if (user.resetPasswordExpires < new Date()) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Token đã hết hạn'
+                });
+            }
+
+            // Mã hóa mật khẩu mới
+            const hashedPassword = await hashPassword(newPassword);
+
+            // Cập nhật mật khẩu và xóa token
+            await userService.updateUser(user._id, {
+                password: hashedPassword,
+                resetPasswordToken: null,
+                resetPasswordExpires: null
+            });
+
+            res.status(200).json({
+                success: true,
+                message: 'Mật khẩu đã được đặt lại thành công'
+            });
+        } catch (error) {
+            logger.error('Lỗi khi đặt lại mật khẩu:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi hệ thống'
+            });
+        }
+    }
+
+    async changePassword(req, res) {
+        try {
+            const { currentPassword, newPassword } = req.body;
+            const userId = req.user._id; // Lấy từ middleware auth
+
+            // Lấy thông tin user
+            const user = await userService.getUserById(userId);
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Người dùng không tồn tại'
+                });
+            }
+
+            // Kiểm tra mật khẩu hiện tại
+            const isPasswordValid = await comparePassword(currentPassword, user.password);
+            if (!isPasswordValid) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Mật khẩu hiện tại không đúng'
+                });
+            }
+
+            // Mã hóa mật khẩu mới
+            const hashedPassword = await hashPassword(newPassword);
+
+            // Cập nhật mật khẩu mới
+            await userService.updateUser(userId, {
+                password: hashedPassword
+            });
+
+            // Gửi email thông báo đổi mật khẩu thành công
+            await emailService.sendPasswordChangedEmail(user.email);
+
+            res.status(200).json({
+                success: true,
+                message: 'Đổi mật khẩu thành công'
+            });
+        } catch (error) {
+            logger.error('Lỗi khi đổi mật khẩu:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Lỗi hệ thống'
+            });
         }
     }
 }

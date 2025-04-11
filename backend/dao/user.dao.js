@@ -15,7 +15,11 @@ class UserDAO {
     }
 
     async findByEmail(email) {
-        return await User.findOne({ email });
+        try {
+            return await User.findOne({ email: email.toLowerCase() });
+        } catch (error) {
+            throw error;
+        }
     }
 
     async findByUsername(username) {
@@ -69,6 +73,17 @@ class UserDAO {
             { $push: { bookingHistory: bookingId } },
             { new: true }
         ).select('-password');
+    }
+
+    async findByResetToken(token) {
+        try {
+            return await User.findOne({
+                resetPasswordToken: token,
+                resetPasswordExpires: { $gt: new Date() }
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 }
 

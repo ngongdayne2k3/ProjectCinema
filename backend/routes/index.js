@@ -6,7 +6,7 @@ const bookingRoutes = require('./bookingRoutes');
 const theaterRoutes = require('./theaterRoutes');
 const seatRoutes = require('./seatRoutes');
 const scheduleRoutes = require('./scheduleRoutes');
-const paymentRoutes = require('./paymentRoutes');
+const paymentRoutes = require('./payment.routes');
 
 
 // Routes

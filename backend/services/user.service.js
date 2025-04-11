@@ -1,6 +1,8 @@
 const userDAO = require('../dao/user.dao');
 const { UserDTO, CreateUserDTO, UpdateUserDTO, LoginDTO } = require('../dto/user.dto');
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const logger = require('../config/logger');
 
 class UserService {
     async createUser(userData) {
@@ -89,6 +91,26 @@ class UserService {
         const user = await userDAO.addBookingToHistory(id, bookingId);
         return user ? new UserDTO(user) : null;
     }
+
+    static async getUserByEmail(email) {
+        try {
+            const user = await userDAO.findByEmail(email.toLowerCase());
+            return user ? new UserDTO(user) : null;
+        } catch (error) {
+            logger.error('Lỗi khi tìm user bằng email:', error);
+            throw error;
+        }
+    }
+
+    static async getUserByResetToken(token) {
+        try {
+            const user = await userDAO.findByResetToken(token);
+            return user ? new UserDTO(user) : null;
+        } catch (error) {
+            logger.error('Lỗi khi tìm user bằng reset token:', error);
+            throw error;
+        }
+    }
 }
 
-module.exports = new UserService(); 
+module.exports = UserService; 

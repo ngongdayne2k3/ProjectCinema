@@ -68,48 +68,48 @@ class EmailService {
         }
     }
 
-    static async sendResetPasswordEmail(userEmail, resetToken) {
+    async sendResetPasswordEmail(email, resetToken) {
         try {
-            const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+            const resetUrl = `http://localhost:5000/reset-password?token=${resetToken}`;
             
             const mailOptions = {
-                from: '"Cinema System" <noreply@cinema.com>',
-                to: userEmail,
-                subject: 'Đặt lại mật khẩu - Cinema System',
+                from: process.env.EMAIL_FROM,
+                to: email,
+                subject: 'Đặt lại mật khẩu - Cinema Booking System',
                 html: `
-                    <h1>Đặt lại mật khẩu</h1>
+                    <h1>Yêu cầu đặt lại mật khẩu</h1>
                     <p>Xin chào,</p>
                     <p>Bạn đã yêu cầu đặt lại mật khẩu cho tài khoản của mình.</p>
-                    <p>Vui lòng nhấp vào liên kết bên dưới để đặt lại mật khẩu:</p>
-                    <p><a href="${resetUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Đặt lại mật khẩu</a></p>
+                    <p>Vui lòng nhấp vào liên kết bên dưới để đặt lại mật khẩu của bạn:</p>
+                    <a href="${resetUrl}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Đặt lại mật khẩu</a>
                     <p>Liên kết này sẽ hết hạn sau 10 phút.</p>
                     <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
                     <p>Trân trọng,</p>
-                    <p>Đội ngũ Cinema System</p>
+                    <p>Đội ngũ Cinema Booking System</p>
                 `
             };
 
             await transporter.sendMail(mailOptions);
-            logger.info(`Email đặt lại mật khẩu đã được gửi đến ${userEmail}`);
+            logger.info(`Email reset password đã được gửi đến ${email}`);
         } catch (error) {
-            logger.error('Lỗi khi gửi email đặt lại mật khẩu:', error);
-            throw error;
+            logger.error('Lỗi khi gửi email reset password:', error);
+            throw new Error('Không thể gửi email reset mật khẩu');
         }
     }
 
-    static async sendPasswordChangedEmail(userEmail) {
+    async sendPasswordChangedEmail(userEmail) {
         try {
             const mailOptions = {
-                from: '"Cinema System" <noreply@cinema.com>',
+                from: process.env.EMAIL_FROM,
                 to: userEmail,
-                subject: 'Mật khẩu đã được thay đổi - Cinema System',
+                subject: 'Mật khẩu đã được thay đổi - Cinema Booking System',
                 html: `
-                    <h1>Mật khẩu đã được thay đổi</h1>
+                    <h1>Thông báo thay đổi mật khẩu</h1>
                     <p>Xin chào,</p>
-                    <p>Mật khẩu tài khoản của bạn vừa được thay đổi.</p>
+                    <p>Mật khẩu tài khoản của bạn vừa được thay đổi thành công.</p>
                     <p>Nếu bạn không thực hiện thay đổi này, vui lòng liên hệ với chúng tôi ngay lập tức.</p>
                     <p>Trân trọng,</p>
-                    <p>Đội ngũ Cinema System</p>
+                    <p>Đội ngũ Cinema Booking System</p>
                 `
             };
 
@@ -117,9 +117,9 @@ class EmailService {
             logger.info(`Email thông báo đổi mật khẩu đã được gửi đến ${userEmail}`);
         } catch (error) {
             logger.error('Lỗi khi gửi email thông báo đổi mật khẩu:', error);
-            throw error;
+            throw new Error('Không thể gửi email thông báo đổi mật khẩu');
         }
     }
 }
 
-module.exports = EmailService; 
+module.exports = new EmailService(); 

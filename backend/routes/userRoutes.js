@@ -16,7 +16,7 @@ router.post('/reset-password', apiLimiter, userController.resetPassword);
 // Protected routes
 router.get('/profile', apiLimiter, auth, userController.getUserProfile);
 router.put('/profile', apiLimiter, auth, validate, userController.updateProfile);
-router.put('/change-password', apiLimiter, auth, validate, userController.changePassword);
+// router.put('/change-password', apiLimiter, auth, validate, userController.changePassword);
 // router.put('/membership/points', auth, userController.updateMembershipPoints);
 
 // Admin routes

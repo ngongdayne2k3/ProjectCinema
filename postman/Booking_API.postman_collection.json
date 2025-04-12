@@ -1,0 +1,250 @@
+{
+    "info": {
+        "name": "Booking API",
+        "description": "Collection để test các API của Booking",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Tạo Booking",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"schedule\": \"{{scheduleId}}\",\n    \"seats\": [\"{{seatId1}}\", \"{{seatId2}}\"],\n    \"paymentMethod\": \"Momo\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/bookings",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings"]
+                },
+                "description": "Tạo booking mới"
+            }
+        },
+        {
+            "name": "Lấy Booking theo ID",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/bookings/{{bookingId}}",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "{{bookingId}}"]
+                },
+                "description": "Lấy thông tin booking theo ID"
+            }
+        },
+        {
+            "name": "Lấy tất cả Booking",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/bookings",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings"]
+                },
+                "description": "Lấy danh sách tất cả booking"
+            }
+        },
+        {
+            "name": "Lấy Booking theo User",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/bookings/user/{{userId}}",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "user", "{{userId}}"]
+                },
+                "description": "Lấy danh sách booking của user"
+            }
+        },
+        {
+            "name": "Lấy Booking theo Lịch chiếu",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/bookings/schedule/{{scheduleId}}",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "schedule", "{{scheduleId}}"]
+                },
+                "description": "Lấy danh sách booking theo lịch chiếu"
+            }
+        },
+        {
+            "name": "Lấy Booking theo Trạng thái",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/bookings/status/{{status}}",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "status", "{{status}}"]
+                },
+                "description": "Lấy danh sách booking theo trạng thái"
+            }
+        },
+        {
+            "name": "Lấy Booking theo Khoảng thời gian",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{base_url}}/bookings/date-range?startDate={{startDate}}&endDate={{endDate}}",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "date-range"],
+                    "query": [
+                        {
+                            "key": "startDate",
+                            "value": "{{startDate}}"
+                        },
+                        {
+                            "key": "endDate",
+                            "value": "{{endDate}}"
+                        }
+                    ]
+                },
+                "description": "Lấy danh sách booking theo khoảng thời gian"
+            }
+        },
+        {
+            "name": "Cập nhật Booking",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"seats\": [\"{{newSeatId1}}\", \"{{newSeatId2}}\"],\n    \"paymentMethod\": \"Banking\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/bookings/{{bookingId}}",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "{{bookingId}}"]
+                },
+                "description": "Cập nhật thông tin booking"
+            }
+        },
+        {
+            "name": "Cập nhật Trạng thái Thanh toán",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"paymentStatus\": \"Đã thanh toán\"\n}"
+                },
+                "url": {
+                    "raw": "{{base_url}}/bookings/{{bookingId}}/payment-status",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "{{bookingId}}", "payment-status"]
+                },
+                "description": "Cập nhật trạng thái thanh toán của booking"
+            }
+        },
+        {
+            "name": "Xóa Booking",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "{{base_url}}/bookings/{{bookingId}}",
+                    "host": ["{{base_url}}"],
+                    "path": ["bookings", "{{bookingId}}"]
+                },
+                "description": "Xóa booking (chỉ admin)"
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:3000/api"
+        },
+        {
+            "key": "token",
+            "value": "your_jwt_token_here"
+        },
+        {
+            "key": "bookingId",
+            "value": "booking_id_here"
+        },
+        {
+            "key": "userId",
+            "value": "user_id_here"
+        },
+        {
+            "key": "scheduleId",
+            "value": "schedule_id_here"
+        },
+        {
+            "key": "seatId1",
+            "value": "seat_id_1_here"
+        },
+        {
+            "key": "seatId2",
+            "value": "seat_id_2_here"
+        },
+        {
+            "key": "newSeatId1",
+            "value": "new_seat_id_1_here"
+        },
+        {
+            "key": "newSeatId2",
+            "value": "new_seat_id_2_here"
+        },
+        {
+            "key": "status",
+            "value": "Chưa thanh toán"
+        },
+        {
+            "key": "startDate",
+            "value": "2024-01-01"
+        },
+        {
+            "key": "endDate",
+            "value": "2024-12-31"
+        }
+    ]
+} 

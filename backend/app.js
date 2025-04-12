@@ -10,6 +10,12 @@ const errorHandler = require('./middlewares/errorHandler');
 const routes = require('./routes');
 const logger = require('./config/logger');
 const ScheduleStatusJob = require('./jobs/scheduleStatus.job');
+const cookieParser = require('cookie-parser');
+const passport = require('./config/passport');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
+const indexRouter = require('./routes/index');
 
 // Khởi tạo ứng dụng Express
 const app = express();
@@ -20,6 +26,7 @@ connectDB();
 // Middleware cơ bản
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true
@@ -31,8 +38,27 @@ app.use(morgan('combined', { stream: { write: message => logger.info(message.tri
 // Phục vụ file tĩnh
 app.use('/uploads', express.static(path.join(__dirname, process.env.UPLOAD_PATH || 'public/uploads')));
 
+// Session configuration
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URI,
+        ttl: 24 * 60 * 60 // 1 day
+    }),
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+    }
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Routes
-app.use('/', routes);
+app.use('/', indexRouter);
 
 // Khởi động job cập nhật trạng thái lịch chiếu
 ScheduleStatusJob.start();

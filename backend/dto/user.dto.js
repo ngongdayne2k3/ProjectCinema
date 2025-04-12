@@ -46,9 +46,18 @@ class LoginDTO {
     }
 }
 
+class ResetPasswordDTO {
+    constructor(data) {
+        this.password = data.password;
+        this.resetPasswordToken = data.resetPasswordToken;
+        this.resetPasswordExpires = data.resetPasswordExpires;
+    }
+}
+
 module.exports = {
     UserDTO,
     CreateUserDTO,
     UpdateUserDTO,
-    LoginDTO
+    LoginDTO,
+    ResetPasswordDTO
 }; 

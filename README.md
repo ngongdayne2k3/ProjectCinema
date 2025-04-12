@@ -11,6 +11,14 @@
 - Git reset --hard <id_commit> # về commit chỉ định (Xóa toàn bộ thay đổi sau commit)
 - git checkout <branch> -- <folder>/ # lấy folder chỉ định từ nhánh về nhánh mình
 
+## Lệnh export db
+- có 2 cách:
+1. Cách 1: `mongodump --host localhost --port 27017 --db ten_db --out "Vị trí của muốn để db" `
+hoặc
+2. Cách 2: Vào mongodb compass ở mục (...) -> chọn export collection -> chọn định dạng muốn export (CSV hoặc json) và cả thư mục muốn để -> export.
+
+## Lệnh import db
+
 ## Cấu trúc dự án
 ```
 PROJECTCINEMA/

@@ -1,0 +1,438 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "ProjectCinema",
+		"description": "API Collection for ProjectCinema",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Theater",
+			"description": "API endpoints for Theater management",
+			"item": [
+				{
+					"name": "Get All Theaters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/theaters",
+							"host": ["{{base_url}}"],
+							"path": ["theaters"]
+						},
+						"description": "Lấy danh sách tất cả rạp"
+					}
+				},
+				{
+					"name": "Get Theater by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/theaters/1",
+							"host": ["{{base_url}}"],
+							"path": ["theaters", "1"]
+						},
+						"description": "Lấy thông tin rạp theo ID"
+					}
+				},
+				{
+					"name": "Get Theaters by Format",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/theaters/format/2D",
+							"host": ["{{base_url}}"],
+							"path": ["theaters", "format", "2D"]
+						},
+						"description": "Lấy rạp theo định dạng"
+					}
+				},
+				{
+					"name": "Get Active Theaters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/theaters/active/theaters",
+							"host": ["{{base_url}}"],
+							"path": ["theaters", "active", "theaters"]
+						},
+						"description": "Lấy danh sách rạp đang hoạt động"
+					}
+				},
+				{
+					"name": "Create Theater",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Rạp 1\",\n    \"capacity\": 100,\n    \"format\": \"2D\",\n    \"rows\": 10,\n    \"seatsPerRow\": 10,\n    \"isActive\": true,\n    \"description\": \"Rạp chiếu phim 2D\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/theaters",
+							"host": ["{{base_url}}"],
+							"path": ["theaters"]
+						},
+						"description": "Tạo rạp mới (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Update Theater",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Rạp 1 Updated\",\n    \"capacity\": 120,\n    \"format\": \"3D\",\n    \"rows\": 12,\n    \"seatsPerRow\": 10,\n    \"isActive\": true,\n    \"description\": \"Rạp chiếu phim 3D\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/theaters/1",
+							"host": ["{{base_url}}"],
+							"path": ["theaters", "1"]
+						},
+						"description": "Cập nhật thông tin rạp (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Delete Theater",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/theaters/1",
+							"host": ["{{base_url}}"],
+							"path": ["theaters", "1"]
+						},
+						"description": "Xóa rạp (cần quyền admin)"
+					}
+				}
+			]
+		},
+		{
+			"name": "Seat",
+			"description": "API endpoints for Seat management",
+			"item": [
+				{
+					"name": "Get Seat by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/seats/1",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "1"]
+						},
+						"description": "Lấy thông tin ghế theo ID"
+					}
+				},
+				{
+					"name": "Get Seats by Theater",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/seats/theater/1",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "theater", "1"]
+						},
+						"description": "Lấy danh sách ghế theo rạp"
+					}
+				},
+				{
+					"name": "Get Available Seats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/seats/theater/1/available",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "theater", "1", "available"]
+						},
+						"description": "Lấy danh sách ghế trống"
+					}
+				},
+				{
+					"name": "Get Seats by Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/seats/theater/1/type/VIP",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "theater", "1", "type", "VIP"]
+						},
+						"description": "Lấy ghế theo loại"
+					}
+				},
+				{
+					"name": "Create Seat",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"theater\": \"1\",\n    \"row\": \"A\",\n    \"number\": 1,\n    \"type\": \"VIP\",\n    \"status\": \"available\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seats",
+							"host": ["{{base_url}}"],
+							"path": ["seats"]
+						},
+						"description": "Tạo ghế mới (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Update Seat",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"theater\": \"1\",\n    \"row\": \"A\",\n    \"number\": 1,\n    \"type\": \"NORMAL\",\n    \"status\": \"booked\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seats/1",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "1"]
+						},
+						"description": "Cập nhật thông tin ghế (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Delete Seat",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/seats/1",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "1"]
+						},
+						"description": "Xóa ghế (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Delete Many Seats",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\"1\", \"2\", \"3\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seats",
+							"host": ["{{base_url}}"],
+							"path": ["seats"]
+						},
+						"description": "Xóa nhiều ghế (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Restore Seat",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/seats/1/restore",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "1", "restore"]
+						},
+						"description": "Khôi phục ghế đã xóa (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Restore Many Seats",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\"1\", \"2\", \"3\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seats/restore/many",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "restore", "many"]
+						},
+						"description": "Khôi phục nhiều ghế (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Update Seat Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"booked\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seats/1/status",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "1", "status"]
+						},
+						"description": "Cập nhật trạng thái ghế (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Bulk Update Seats",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ids\": [\"1\", \"2\", \"3\"],\n    \"type\": \"VIP\",\n    \"status\": \"booked\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/seats/bulk/update",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "bulk", "update"]
+						},
+						"description": "Cập nhật nhiều ghế (cần quyền admin)"
+					}
+				},
+				{
+					"name": "Get Deleted Seats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/seats/theater/1/deleted",
+							"host": ["{{base_url}}"],
+							"path": ["seats", "theater", "1", "deleted"]
+						},
+						"description": "Lấy danh sách ghế đã xóa (cần quyền admin)"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "your_admin_token_here",
+			"type": "string"
+		}
+	]
+} 

@@ -1,22 +1,37 @@
 const express = require('express');
 const router = express.Router();
-const movieRoutes = require('./movieRoutes');
 const userRoutes = require('./userRoutes');
-const bookingRoutes = require('./bookingRoutes');
+const movieRoutes = require('./movieRoutes');
 const theaterRoutes = require('./theaterRoutes');
-const seatRoutes = require('./seatRoutes');
 const scheduleRoutes = require('./scheduleRoutes');
+const seatRoutes = require('./seatRoutes');
+const bookingRoutes = require('./bookingRoutes');
 const paymentRoutes = require('./payment.routes');
+const authRoutes = require('./auth.routes');
 
+// Auth routes
+router.use('/auth', authRoutes);
 
-// Routes
-router.use(`/movies`, movieRoutes);
-router.use(`/users`, userRoutes);
-router.use(`/bookings`, bookingRoutes);
+// User routes
+router.use('/users', userRoutes);
+
+// Movie routes
+router.use('/movies', movieRoutes);
+
+// Theater routes
 router.use('/theaters', theaterRoutes);
+
+// Schedule routes
+router.use('/schedules', scheduleRoutes);
+
+// Seat routes
 router.use('/seats', seatRoutes);
-router.use(`/schedules`, scheduleRoutes);
-router.use('/payment', paymentRoutes);
+
+// Booking routes
+router.use('/bookings', bookingRoutes);
+
+// Payment routes
+router.use('/payments', paymentRoutes);
 
 // Health check route
 router.get('/health', (req, res) => {

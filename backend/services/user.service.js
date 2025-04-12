@@ -1,8 +1,9 @@
 const userDAO = require('../dao/user.dao');
-const { UserDTO, CreateUserDTO, UpdateUserDTO, LoginDTO } = require('../dto/user.dto');
+const { UserDTO, CreateUserDTO, UpdateUserDTO, LoginDTO, ResetPasswordDTO } = require('../dto/user.dto');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 const logger = require('../config/logger');
+const bcrypt = require('bcryptjs');
+const emailService = require('./email.service');
 
 class UserService {
     async createUser(userData) {
@@ -108,6 +109,64 @@ class UserService {
             return user ? new UserDTO(user) : null;
         } catch (error) {
             logger.error('Lỗi khi tìm user bằng reset token:', error);
+            throw error;
+        }
+    }
+
+    async forgotPassword(email) {
+        try {
+            const user = await userDAO.findByEmail(email);
+            if (!user) {
+                throw new Error('Email không tồn tại trong hệ thống');
+            }
+
+            // Tạo token reset mật khẩu
+            const resetToken = jwt.sign(
+                { id: user._id },
+                process.env.JWT_SECRET,
+                { expiresIn: '10m' }
+            );
+
+            // Cập nhật token vào database
+            const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 phút
+            await userDAO.updateResetPasswordToken(user._id, resetToken, expires);
+
+            // Gửi email reset mật khẩu
+            await emailService.sendResetPasswordEmail(user.email, resetToken);
+
+            return {
+                success: true,
+                message: 'Email hướng dẫn đặt lại mật khẩu đã được gửi'
+            };
+        } catch (error) {
+            logger.error('Lỗi trong quá trình xử lý quên mật khẩu:', error);
+            throw error;
+        }
+    }
+
+    async resetPassword(token, newPassword) {
+        try {
+            // Kiểm tra token hợp lệ
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const user = await userDAO.findByResetToken(token);
+
+            if (!user) {
+                throw new Error('Token không hợp lệ hoặc đã hết hạn');
+            }
+
+            // Mã hóa mật khẩu mới
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            
+            // Cập nhật mật khẩu mới
+            const updatedUser = await userDAO.resetPassword(user._id, hashedPassword);
+            
+            return {
+                success: true,
+                message: 'Mật khẩu đã được đặt lại thành công',
+                user: new UserDTO(updatedUser)
+            };
+        } catch (error) {
+            logger.error('Lỗi trong quá trình đặt lại mật khẩu:', error);
             throw error;
         }
     }

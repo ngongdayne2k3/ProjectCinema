@@ -1,14 +1,12 @@
 const nodemailer = require('nodemailer');
 
-const emailConfig = {
-    host: process.env.MAILTRAP_HOST || 'sandbox.smtp.mailtrap.io',
-    port: process.env.MAILTRAP_PORT || 2525,
+const transporter = nodemailer.createTransport({
+    host: process.env.MAILTRAP_HOST,
+    port: process.env.MAILTRAP_PORT,
     auth: {
-        user: process.env.MAILTRAP_USER || 'your_mailtrap_user',
-        pass: process.env.MAILTRAP_PASS || 'your_mailtrap_password'
+        user: process.env.MAILTRAP_USER,
+        pass: process.env.MAILTRAP_PASS
     }
-};
-
-const transporter = nodemailer.createTransport(emailConfig);
+});
 
 module.exports = transporter; 

@@ -76,14 +76,41 @@ class UserDAO {
     }
 
     async findByResetToken(token) {
-        try {
-            return await User.findOne({
+        return await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+    }
+
+    async updateResetPasswordToken(id, token, expires) {
+        return await User.findByIdAndUpdate(
+            id,
+            {
                 resetPasswordToken: token,
-                resetPasswordExpires: { $gt: new Date() }
-            });
-        } catch (error) {
-            throw error;
-        }
+                resetPasswordExpires: expires
+            },
+            { new: true }
+        );
+    }
+
+    async resetPassword(id, password) {
+        return await User.findByIdAndUpdate(
+            id,
+            {
+                password: password,
+                resetPasswordToken: undefined,
+                resetPasswordExpires: undefined
+            },
+            { new: true }
+        ).select('-password');
+    }
+
+    async updateGoogleId(userId, googleId) {
+        return await User.findByIdAndUpdate(
+            userId,
+            { googleId },
+            { new: true }
+        ).select('-password');
     }
 }
 

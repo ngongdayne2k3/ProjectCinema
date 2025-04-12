@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema({
     resetPasswordExpires: {
         type: Date
     },
+    googleId: {
+        type: String,
+        sparse: true
+    },
     isActive: {
         type: Boolean,
         default: true

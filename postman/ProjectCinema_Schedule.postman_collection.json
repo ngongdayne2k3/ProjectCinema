@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "project-cinema-schedule",
+		"name": "ProjectCinema - Schedule API",
+		"description": "Collection kiểm thử API lịch chiếu",
+		"schema": "https://schema.getpostman.com/json/collections/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public APIs",
+			"item": [
+				{
+					"name": "Lấy danh sách lịch chiếu",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/schedules",
+							"host": ["{{base_url}}"],
+							"path": ["schedules"]
+						},
+						"description": "Lấy danh sách tất cả lịch chiếu"
+					}
+				},
+				{
+					"name": "Lấy lịch chiếu theo ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/schedules/:id",
+							"host": ["{{base_url}}"],
+							"path": ["schedules", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "schedule_id",
+									"description": "ID của lịch chiếu"
+								}
+							]
+						},
+						"description": "Lấy thông tin chi tiết của một lịch chiếu"
+					}
+				},
+				{
+					"name": "Lấy lịch chiếu theo phim",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/schedules/movie/:movieId",
+							"host": ["{{base_url}}"],
+							"path": ["schedules", "movie", ":movieId"],
+							"variable": [
+								{
+									"key": "movieId",
+									"value": "movie_id",
+									"description": "ID của phim"
+								}
+							]
+						},
+						"description": "Lấy danh sách lịch chiếu của một phim"
+					}
+				},
+				{
+					"name": "Lấy lịch chiếu theo rạp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/schedules/theater/:theaterId",
+							"host": ["{{base_url}}"],
+							"path": ["schedules", "theater", ":theaterId"],
+							"variable": [
+								{
+									"key": "theaterId",
+									"value": "theater_id",
+									"description": "ID của rạp"
+								}
+							]
+						},
+						"description": "Lấy danh sách lịch chiếu của một rạp"
+					}
+				},
+				{
+					"name": "Lấy lịch chiếu theo khoảng thời gian",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/schedules/date-range?startDate=2024-03-01&endDate=2024-03-31",
+							"host": ["{{base_url}}"],
+							"path": ["schedules", "date-range"],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-03-01",
+									"description": "Ngày bắt đầu (YYYY-MM-DD)"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-03-31",
+									"description": "Ngày kết thúc (YYYY-MM-DD)"
+								}
+							]
+						},
+						"description": "Lấy danh sách lịch chiếu trong khoảng thời gian"
+					}
+				},
+				{
+					"name": "Lấy lịch chiếu theo trạng thái",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/schedules/status/:status",
+							"host": ["{{base_url}}"],
+							"path": ["schedules", "status", ":status"],
+							"variable": [
+								{
+									"key": "status",
+									"value": "upcoming",
+									"description": "Trạng thái lịch chiếu (upcoming, showing, finished, canceled)"
+								}
+							]
+						},
+						"description": "Lấy danh sách lịch chiếu theo trạng thái"
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin APIs",
+			"item": [
+				{
+					"name": "Tạo lịch chiếu mới",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"movie\": \"movie_id\",\n    \"theater\": \"theater_id\",\n    \"startTime\": \"2024-03-20T14:00:00Z\",\n    \"endTime\": \"2024-03-20T16:30:00Z\",\n    \"format\": \"2D\",\n    \"prices\": [\n        {\n            \"type\": \"Standard\",\n            \"price\": 100000\n        },\n        {\n            \"type\": \"VIP\",\n            \"price\": 150000\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/schedules",
+							"host": ["{{base_url}}"],
+							"path": ["schedules"]
+						},
+						"description": "Tạo một lịch chiếu mới"
+					}
+				},
+				{
+					"name": "Cập nhật lịch chiếu",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"startTime\": \"2024-03-20T15:00:00Z\",\n    \"endTime\": \"2024-03-20T17:30:00Z\",\n    \"format\": \"3D\",\n    \"prices\": [\n        {\n            \"type\": \"Standard\",\n            \"price\": 120000\n        },\n        {\n            \"type\": \"VIP\",\n            \"price\": 180000\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/schedules/:id",
+							"host": ["{{base_url}}"],
+							"path": ["schedules", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "schedule_id",
+									"description": "ID của lịch chiếu"
+								}
+							]
+						},
+						"description": "Cập nhật thông tin lịch chiếu"
+					}
+				},
+				{
+					"name": "Xóa lịch chiếu",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/schedules/:id",
+							"host": ["{{base_url}}"],
+							"path": ["schedules", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "schedule_id",
+									"description": "ID của lịch chiếu"
+								}
+							]
+						},
+						"description": "Xóa một lịch chiếu"
+					}
+				},
+				{
+					"name": "Hủy lịch chiếu",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/schedules/:id/cancel",
+							"host": ["{{base_url}}"],
+							"path": ["schedules", ":id", "cancel"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "schedule_id",
+									"description": "ID của lịch chiếu"
+								}
+							]
+						},
+						"description": "Hủy một lịch chiếu"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "your_admin_token_here",
+			"type": "string"
+		}
+	]
+} 
